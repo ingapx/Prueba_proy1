@@ -434,6 +434,15 @@
 				"typeProperties": {
 					"source": {
 						"type": "ExcelSource",
+						"additionalColumns": [
+							{
+								"name": "fechaCarga",
+								"value": {
+									"value": "@utcNow()",
+									"type": "Expression"
+								}
+							}
+						],
 						"storeSettings": {
 							"type": "FileServerReadSettings",
 							"recursive": true,
@@ -540,6 +549,15 @@
 				"typeProperties": {
 					"source": {
 						"type": "ExcelSource",
+						"additionalColumns": [
+							{
+								"name": "fechaCarga",
+								"value": {
+									"value": "@utcNow()",
+									"type": "Expression"
+								}
+							}
+						],
 						"storeSettings": {
 							"type": "FileServerReadSettings",
 							"recursive": true,
@@ -634,6 +652,15 @@
 				"typeProperties": {
 					"source": {
 						"type": "ExcelSource",
+						"additionalColumns": [
+							{
+								"name": "fechaCarga",
+								"value": {
+									"value": "@utcNow()",
+									"type": "Expression"
+								}
+							}
+						],
 						"storeSettings": {
 							"type": "FileServerReadSettings",
 							"recursive": true,
@@ -740,6 +767,15 @@
 				"typeProperties": {
 					"source": {
 						"type": "ExcelSource",
+						"additionalColumns": [
+							{
+								"name": "fechaCarga",
+								"value": {
+									"value": "@utcNow()",
+									"type": "Expression"
+								}
+							}
+						],
 						"storeSettings": {
 							"type": "FileServerReadSettings",
 							"recursive": true,
