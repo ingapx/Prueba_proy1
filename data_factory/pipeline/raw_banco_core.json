@@ -823,7 +823,24 @@
 										"enablePartitionDiscovery": false
 									}
 								},
-								"enableStaging": false
+								"sink": {
+									"type": "ParquetSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "ParquetWriteSettings"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
 							},
 							"inputs": [
 								{
@@ -831,12 +848,32 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"application": {
+											"value": "@variables('Banco')",
+											"type": "Expression"
+										},
+										"filename": {
 											"value": "@item()",
 											"type": "Expression"
 										}
 									}
 								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_raw_parquetBanco",
+									"type": "DatasetReference"
+								}
 							]
+						},
+						{
+							"name": "Var_Banco",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "Banco",
+								"value": ""
+							}
 						}
 					]
 				}
@@ -856,6 +893,9 @@
 				"type": "String"
 			},
 			"r": {
+				"type": "String"
+			},
+			"Banco": {
 				"type": "String"
 			}
 		},
