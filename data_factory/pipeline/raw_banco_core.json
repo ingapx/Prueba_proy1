@@ -24,6 +24,10 @@
 									"value": "@utcNow()",
 									"type": "Expression"
 								}
+							},
+							{
+								"name": "registroFuente",
+								"value": "banco"
 							}
 						],
 						"storeSettings": {
