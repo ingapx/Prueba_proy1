@@ -2,7 +2,7 @@
 	"name": "ds_master_parquet",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "ADLS_LinkedService",
+			"referenceName": "ADLS_LinkedService_Banco",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
