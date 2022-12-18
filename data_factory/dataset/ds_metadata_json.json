@@ -1,0 +1,28 @@
+{
+	"name": "ds_metadata_json",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ADLS_LinkedService_Banco",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"application": {
+				"type": "string"
+			},
+			"filename": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "@dataset().application",
+				"folderPath": "@dataset().filename",
+				"fileSystem": "metadata"
+			}
+		},
+		"schema": {}
+	}
+}
