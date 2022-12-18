@@ -1,6 +1,266 @@
 {
 	"name": "raw_banco_core",
 	"properties": {
+		"activities": [
+			{
+				"name": "source_to_raw_dataInicial",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "FileServerReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "ParquetWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "codbin",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "codbin",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "fecha_desembolso",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "fecha_desembolso",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "fecha_activacion",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "fecha_activacion",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "NumMesesAct",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "NumMesesAct",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "fecha_cancelacion",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "fecha_cancelacion",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "NumMesesCanc",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "NumMesesCanc",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "linea_credito",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "linea_credito",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "flg_excepcion_consolidado",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "flg_excepcion_consolidado",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "PD",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PD",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "id_agencia",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "id_agencia",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "TasaPOS",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "TasaPOS",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "IdFlujoVenta",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "IdFlujoVenta",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "IdCanalVenta",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "IdCanalVenta",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "idPerfilTC",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "idPerfilTC",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "IdRangoIngreso",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "IdRangoIngreso",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "edad",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "edad",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_source_banco_csv",
+						"type": "DatasetReference",
+						"parameters": {
+							"application": "Banco",
+							"filename": "DataCruda\\DataTC"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_raw_parquetBanco",
+						"type": "DatasetReference",
+						"parameters": {
+							"application": "banco",
+							"filename": "data\\dataInicial"
+						}
+					}
+				]
+			}
+		],
 		"folder": {
 			"name": "01_raw_source/banco"
 		},
