@@ -1,0 +1,1269 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adf-upbk-cos-devbk-p8v"
+		},
+		"FS_LS_Banco01_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'FS_LS_Banco01'"
+		},
+		"ADLS_LinkedService_Banco_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'ADLS_LinkedService_Banco'"
+		},
+		"FS_LS_Banco01_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "\\\\LenovoRed\\C$\\trabajo"
+		},
+		"FS_LS_Banco01_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "MicrosoftAccount\\carlos.ormeno@outlook.es"
+		},
+		"ADLS_LinkedService_Banco_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://dlsupbkcosdevbkk6k.dfs.core.windows.net/"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/business_student_overview')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Set variable1",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "r",
+							"value": "0"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"variables": {
+					"r": {
+						"type": "String"
+					},
+					"Banco": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "03_business_reports"
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-12-16T16:42:07Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/master_party_core')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Set variable1",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "w",
+							"value": "0"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"variables": {
+					"w": {
+						"type": "String"
+					},
+					"z": {
+						"type": "String"
+					},
+					"r": {
+						"type": "String"
+					},
+					"Banco": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "02_master_models"
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-12-16T16:42:07Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/master_transaction_core')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Set variable1",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "z",
+							"value": "0"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"variables": {
+					"z": {
+						"type": "String"
+					},
+					"r": {
+						"type": "String"
+					},
+					"Banco": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "02_master_models"
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-12-16T16:42:07Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/raw_ga4_core')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Set variable1",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "y",
+							"value": "0"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"variables": {
+					"y": {
+						"type": "String"
+					},
+					"w": {
+						"type": "String"
+					},
+					"z": {
+						"type": "String"
+					},
+					"r": {
+						"type": "String"
+					},
+					"Banco": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "01_raw_source"
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-12-16T16:42:07Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/raw_know_core')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Set variable1",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "x",
+							"value": "0"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"variables": {
+					"x": {
+						"type": "String"
+					},
+					"y": {
+						"type": "String"
+					},
+					"w": {
+						"type": "String"
+					},
+					"z": {
+						"type": "String"
+					},
+					"r": {
+						"type": "String"
+					},
+					"Banco": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "01_raw_source"
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-12-16T16:42:07Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/IRLocalCaosBK')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/raw_banco_core')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "source_to_raw_dataInicial",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "FileServerReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "codbin",
+											"type": "Int32",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "codbin",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "fecha_desembolso",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "fecha_desembolso",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "fecha_activacion",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "fecha_activacion",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "NumMesesAct",
+											"type": "Int32",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "NumMesesAct",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "fecha_cancelacion",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "fecha_cancelacion",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "NumMesesCanc",
+											"type": "Int32",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "NumMesesCanc",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "linea_credito",
+											"type": "Int32",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "linea_credito",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "flg_excepcion_consolidado",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "flg_excepcion_consolidado",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "PD",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "PD",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "id_agencia",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "id_agencia",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "TasaPOS",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "TasaPOS",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IdFlujoVenta",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IdFlujoVenta",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IdCanalVenta",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IdCanalVenta",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "idPerfilTC",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "idPerfilTC",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IdRangoIngreso",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IdRangoIngreso",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "edad",
+											"type": "Int32",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "edad",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_source_banco_csv",
+								"type": "DatasetReference",
+								"parameters": {
+									"application": "Banco",
+									"filename": "DataCruda\\DataTC"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_raw_parquetBanco",
+								"type": "DatasetReference",
+								"parameters": {
+									"application": "banco",
+									"filename": "data\\dataInicial"
+								}
+							}
+						]
+					},
+					{
+						"name": "carga_maestro_agencia",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "source_to_raw_dataInicial",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ExcelSource",
+								"storeSettings": {
+									"type": "FileServerReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "ID_AGENCIA",
+											"type": "Int32",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "ID_AGENCIA",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "AGENCIA",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "AGENCIA",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "DEPARTAMENTO",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "DEPARTAMENTO",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "PROVINCIA",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "PROVINCIA",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "DISTRITO",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "DISTRITO",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_master_gen",
+								"type": "DatasetReference",
+								"parameters": {
+									"application": "Banco",
+									"filename": "Maestros\\Agencias\\agencias"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_raw_parquetBanco",
+								"type": "DatasetReference",
+								"parameters": {
+									"application": "banco",
+									"filename": "maestro\\agencias"
+								}
+							}
+						]
+					},
+					{
+						"name": "carga_maestros_fujoVenta",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "carga_maestro_agencia",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ExcelSource",
+								"storeSettings": {
+									"type": "FileServerReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "idFlujoVenta",
+											"type": "Int32",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "idFlujoVenta",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "FlujoVenta",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "FlujoVenta",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "FlujoVentaDetalle",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "FlujoVentaDetalle",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_master_gen",
+								"type": "DatasetReference",
+								"parameters": {
+									"application": "Banco",
+									"filename": "Maestros\\FlujoVenta\\flujoVenta"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_raw_parquetBanco",
+								"type": "DatasetReference",
+								"parameters": {
+									"application": "banco",
+									"filename": "maestro\\flujoVenta"
+								}
+							}
+						]
+					},
+					{
+						"name": "carga_maestros_perfil",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "carga_maestros_fujoVenta",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ExcelSource",
+								"storeSettings": {
+									"type": "FileServerReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "idPerfilTC",
+											"type": "Int32",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "idPerfilTC",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "PerfilTC",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "PerfilTC",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_master_gen",
+								"type": "DatasetReference",
+								"parameters": {
+									"application": "Banco",
+									"filename": "Maestros\\Perfil\\Perfil"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_raw_parquetBanco",
+								"type": "DatasetReference",
+								"parameters": {
+									"application": "banco",
+									"filename": "maestro\\perfil"
+								}
+							}
+						]
+					},
+					{
+						"name": "carga_maestros_productos",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "carga_maestros_perfil",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ExcelSource",
+								"storeSettings": {
+									"type": "FileServerReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "codbin",
+											"type": "Int32",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "codbin",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "BIN",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "BIN",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "orden",
+											"type": "Int32",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "orden",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_master_gen",
+								"type": "DatasetReference",
+								"parameters": {
+									"application": "Banco",
+									"filename": "Maestros\\Productos\\Productos"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_raw_parquetBanco",
+								"type": "DatasetReference",
+								"parameters": {
+									"application": "banco",
+									"filename": "maestro\\productos"
+								}
+							}
+						]
+					},
+					{
+						"name": "carga_maestros_rangoIngreso",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "carga_maestros_productos",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ExcelSource",
+								"storeSettings": {
+									"type": "FileServerReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "idRangoIngreso",
+											"type": "Int32",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "idRangoIngreso",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "Rango",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Rango",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_master_gen",
+								"type": "DatasetReference",
+								"parameters": {
+									"application": "Banco",
+									"filename": "Maestros\\RangoIngreso\\RangoIngreso"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_raw_parquetBanco",
+								"type": "DatasetReference",
+								"parameters": {
+									"application": "banco",
+									"filename": "maestro\\rangoInreso"
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"variables": {
+					"x": {
+						"type": "String"
+					},
+					"y": {
+						"type": "String"
+					},
+					"w": {
+						"type": "String"
+					},
+					"z": {
+						"type": "String"
+					},
+					"r": {
+						"type": "String"
+					},
+					"Banco": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "01_raw_source/banco"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_source_banco_csv')]",
+				"[concat(variables('factoryId'), '/datasets/ds_raw_parquetBanco')]",
+				"[concat(variables('factoryId'), '/datasets/ds_master_gen')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/FS_LS_Banco01')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "FileServer",
+				"typeProperties": {
+					"host": "[parameters('FS_LS_Banco01_properties_typeProperties_host')]",
+					"userId": "[parameters('FS_LS_Banco01_properties_typeProperties_userId')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('FS_LS_Banco01_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "IRLocalCaosBK",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/IRLocalCaosBK')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ADLS_LinkedService_Banco')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('ADLS_LinkedService_Banco_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('ADLS_LinkedService_Banco_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_source_banco_csv')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "FS_LS_Banco01",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"application": {
+						"type": "string"
+					},
+					"filename": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "FileServerLocation",
+						"fileName": {
+							"value": "@concat(dataset().filename,'.csv')",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().application",
+							"type": "Expression"
+						}
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/FS_LS_Banco01')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_raw_parquetBanco')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ADLS_LinkedService_Banco",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"application": {
+						"type": "string"
+					},
+					"filename": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@concat(dataset().filename, '.parquet')",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().application",
+							"type": "Expression"
+						},
+						"fileSystem": "raw"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ADLS_LinkedService_Banco')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_master_gen')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "FS_LS_Banco01",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"application": {
+						"type": "string"
+					},
+					"filename": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Excel",
+				"typeProperties": {
+					"sheetName": "Hoja1",
+					"location": {
+						"type": "FileServerLocation",
+						"fileName": "@concat(dataset().filename,'.xlsx')",
+						"folderPath": "@dataset().application"
+					},
+					"firstRowAsHeader": true
+				},
+				"schema": [
+					{
+						"name": "ID_AGENCIA",
+						"type": "String"
+					},
+					{
+						"name": "AGENCIA",
+						"type": "String"
+					},
+					{
+						"name": "DEPARTAMENTO",
+						"type": "String"
+					},
+					{
+						"name": "PROVINCIA",
+						"type": "String"
+					},
+					{
+						"name": "DISTRITO",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/FS_LS_Banco01')]"
+			]
+		}
+	]
+}

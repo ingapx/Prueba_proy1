@@ -1,0 +1,30 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adf-upbk-cos-devbk-p8v"
+		},
+		"FS_LS_Banco01_password": {
+			"value": ""
+		},
+		"ADLS_LinkedService_Banco_accountKey": {
+			"value": ""
+		},
+		"FS_LS_Banco01_properties_typeProperties_host": {
+			"value": "\\\\LenovoRed\\C$\\trabajo"
+		},
+		"FS_LS_Banco01_properties_typeProperties_userId": {
+			"value": "MicrosoftAccount\\carlos.ormeno@outlook.es"
+		},
+		"ADLS_LinkedService_Banco_properties_typeProperties_url": {
+			"value": "https://dlsupbkcosdevbkk6k.dfs.core.windows.net/"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
