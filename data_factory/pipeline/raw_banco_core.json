@@ -42,7 +42,7 @@
 							{
 								"source": {
 									"name": "codbin",
-									"type": "String",
+									"type": "Int32",
 									"physicalType": "String"
 								},
 								"sink": {
@@ -54,7 +54,7 @@
 							{
 								"source": {
 									"name": "fecha_desembolso",
-									"type": "String",
+									"type": "DateTime",
 									"physicalType": "String"
 								},
 								"sink": {
@@ -66,7 +66,7 @@
 							{
 								"source": {
 									"name": "fecha_activacion",
-									"type": "String",
+									"type": "DateTime",
 									"physicalType": "String"
 								},
 								"sink": {
@@ -78,7 +78,7 @@
 							{
 								"source": {
 									"name": "NumMesesAct",
-									"type": "String",
+									"type": "Int32",
 									"physicalType": "String"
 								},
 								"sink": {
@@ -90,7 +90,7 @@
 							{
 								"source": {
 									"name": "fecha_cancelacion",
-									"type": "String",
+									"type": "DateTime",
 									"physicalType": "String"
 								},
 								"sink": {
@@ -102,7 +102,7 @@
 							{
 								"source": {
 									"name": "NumMesesCanc",
-									"type": "String",
+									"type": "Int32",
 									"physicalType": "String"
 								},
 								"sink": {
@@ -114,7 +114,7 @@
 							{
 								"source": {
 									"name": "linea_credito",
-									"type": "String",
+									"type": "Int32",
 									"physicalType": "String"
 								},
 								"sink": {
@@ -222,7 +222,7 @@
 							{
 								"source": {
 									"name": "edad",
-									"type": "String",
+									"type": "Int32",
 									"physicalType": "String"
 								},
 								"sink": {
@@ -300,6 +300,68 @@
 					"enableStaging": false,
 					"translator": {
 						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "ID_AGENCIA",
+									"type": "Int32",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ID_AGENCIA",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "AGENCIA",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "AGENCIA",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "DEPARTAMENTO",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "DEPARTAMENTO",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "PROVINCIA",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PROVINCIA",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "DISTRITO",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "DISTRITO",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							}
+						],
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
@@ -324,6 +386,112 @@
 						"parameters": {
 							"application": "banco",
 							"filename": "maestro\\agencias"
+						}
+					}
+				]
+			},
+			{
+				"name": "carga_maestros_fujoVenta",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "carga_maestro_agencia",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "ExcelSource",
+						"storeSettings": {
+							"type": "FileServerReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						}
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "ParquetWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "idFlujoVenta",
+									"type": "Int32",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "idFlujoVenta",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "FlujoVenta",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "FlujoVenta",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "FlujoVentaDetalle",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "FlujoVentaDetalle",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_master_gen",
+						"type": "DatasetReference",
+						"parameters": {
+							"application": "Banco",
+							"filename": "Maestros\\FlujoVenta\\flujoVenta"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_raw_parquetBanco",
+						"type": "DatasetReference",
+						"parameters": {
+							"application": "banco",
+							"filename": "maestro\\flujoVenta"
 						}
 					}
 				]
