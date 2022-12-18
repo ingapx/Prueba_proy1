@@ -162,12 +162,6 @@
 											"value": "'@{variables('process_date')}'",
 											"type": "Expression"
 										}
-									},
-									"datasetParameters": {
-										"sourceKnowUser": {
-											"application": "@string('sharedknow')",
-											"filename": "@concat('userstest/year=',pipeline().parameters.year_date, '/month=',pipeline().parameters.month_date, '/userstest.parquet')"
-										}
 									}
 								},
 								"compute": {
