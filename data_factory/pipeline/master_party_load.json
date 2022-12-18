@@ -40,7 +40,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"zona": "master",
-							"application": "lakehouse",
+							"application": "banco",
 							"filename": "m_party"
 						}
 					},
