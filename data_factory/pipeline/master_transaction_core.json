@@ -1,6 +1,26 @@
 {
 	"name": "master_transaction_core",
 	"properties": {
+		"activities": [
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "z",
+					"value": ""
+				}
+			}
+		],
+		"variables": {
+			"z": {
+				"type": "String"
+			},
+			"r": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "02_master_models"
 		},
