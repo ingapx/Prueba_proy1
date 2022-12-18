@@ -1,0 +1,42 @@
+{
+	"name": "ds_master_agencia",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "FS_LS_Banco01",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": "Hoja1",
+			"location": {
+				"type": "FileServerLocation",
+				"fileName": "agencias.xlsx",
+				"folderPath": "Banco/Maestros/Agencias"
+			},
+			"firstRowAsHeader": true
+		},
+		"schema": [
+			{
+				"name": "ID_AGENCIA",
+				"type": "String"
+			},
+			{
+				"name": "AGENCIA",
+				"type": "String"
+			},
+			{
+				"name": "DEPARTAMENTO",
+				"type": "String"
+			},
+			{
+				"name": "PROVINCIA",
+				"type": "String"
+			},
+			{
+				"name": "DISTRITO",
+				"type": "String"
+			}
+		]
+	}
+}

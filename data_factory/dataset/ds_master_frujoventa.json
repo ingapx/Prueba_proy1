@@ -1,0 +1,34 @@
+{
+	"name": "ds_master_frujoventa",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "FS_LS_Banco01",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": "Hoja1",
+			"location": {
+				"type": "FileServerLocation",
+				"fileName": "flujoVenta.xlsx",
+				"folderPath": "Banco/Maestros/FlujoVenta"
+			},
+			"firstRowAsHeader": true
+		},
+		"schema": [
+			{
+				"name": "idFlujoVenta",
+				"type": "String"
+			},
+			{
+				"name": "FlujoVenta",
+				"type": "String"
+			},
+			{
+				"name": "FlujoVentaDetalle",
+				"type": "String"
+			}
+		]
+	}
+}

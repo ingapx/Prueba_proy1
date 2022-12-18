@@ -1,0 +1,30 @@
+{
+	"name": "ds_master_perfil",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "FS_LS_Banco01",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": "Hoja1",
+			"location": {
+				"type": "FileServerLocation",
+				"fileName": "Perfil.xlsx",
+				"folderPath": "Banco/Maestros/Perfil"
+			},
+			"firstRowAsHeader": true
+		},
+		"schema": [
+			{
+				"name": "idPerfilTC",
+				"type": "String"
+			},
+			{
+				"name": "PerfilTC",
+				"type": "String"
+			}
+		]
+	}
+}

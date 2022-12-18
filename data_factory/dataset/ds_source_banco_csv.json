@@ -1,5 +1,5 @@
 {
-	"name": "ds_source_banco_cSV",
+	"name": "ds_source_banco_csv",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "FS_LS_Banco01",
