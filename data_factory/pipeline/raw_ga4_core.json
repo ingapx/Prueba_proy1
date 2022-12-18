@@ -9,7 +9,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "y",
-					"value": ""
+					"value": "0"
 				}
 			}
 		],
@@ -24,6 +24,9 @@
 				"type": "String"
 			},
 			"r": {
+				"type": "String"
+			},
+			"Banco": {
 				"type": "String"
 			}
 		},

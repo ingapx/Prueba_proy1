@@ -9,12 +9,15 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "r",
-					"value": ""
+					"value": "0"
 				}
 			}
 		],
 		"variables": {
 			"r": {
+				"type": "String"
+			},
+			"Banco": {
 				"type": "String"
 			}
 		},

@@ -9,12 +9,27 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "x",
-					"value": ""
+					"value": "0"
 				}
 			}
 		],
 		"variables": {
 			"x": {
+				"type": "String"
+			},
+			"y": {
+				"type": "String"
+			},
+			"w": {
+				"type": "String"
+			},
+			"z": {
+				"type": "String"
+			},
+			"r": {
+				"type": "String"
+			},
+			"Banco": {
 				"type": "String"
 			}
 		},
