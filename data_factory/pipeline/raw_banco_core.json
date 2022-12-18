@@ -536,6 +536,32 @@
 					"enableStaging": false,
 					"translator": {
 						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "idPerfilTC",
+									"type": "Int32",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "idPerfilTC",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "PerfilTC",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PerfilTC",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							}
+						],
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
@@ -546,13 +572,21 @@
 				"inputs": [
 					{
 						"referenceName": "ds_master_gen",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"application": "Banco",
+							"filename": "Maestros\\Perfil\\Perfil"
+						}
 					}
 				],
 				"outputs": [
 					{
 						"referenceName": "ds_raw_parquetBanco",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"application": "banco",
+							"filename": "maestro\\perfil"
+						}
 					}
 				]
 			},
@@ -596,6 +630,44 @@
 					"enableStaging": false,
 					"translator": {
 						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "codbin",
+									"type": "Int32",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "codbin",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "BIN",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "BIN",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "orden",
+									"type": "Int32",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "orden",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							}
+						],
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
@@ -606,13 +678,21 @@
 				"inputs": [
 					{
 						"referenceName": "ds_master_gen",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"application": "Banco",
+							"filename": "Maestros\\Productos\\Productos"
+						}
 					}
 				],
 				"outputs": [
 					{
 						"referenceName": "ds_raw_parquetBanco",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"application": "banco",
+							"filename": "maestro\\productos"
+						}
 					}
 				]
 			},
@@ -656,6 +736,32 @@
 					"enableStaging": false,
 					"translator": {
 						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "idRangoIngreso",
+									"type": "Int32",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "idRangoIngreso",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Rango",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Rango",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							}
+						],
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
@@ -666,13 +772,21 @@
 				"inputs": [
 					{
 						"referenceName": "ds_master_gen",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"application": "Banco",
+							"filename": "Maestros\\RangoIngreso\\RangoIngreso"
+						}
 					}
 				],
 				"outputs": [
 					{
 						"referenceName": "ds_raw_parquetBanco",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"application": "banco",
+							"filename": "maestro\\rangoInreso"
+						}
 					}
 				]
 			}
