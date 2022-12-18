@@ -16,6 +16,7 @@
 		"annotations": [],
 		"type": "Excel",
 		"typeProperties": {
+			"sheetName": "Hoja1",
 			"location": {
 				"type": "FileServerLocation",
 				"fileName": "@concat(dataset().filename,'.xlsx')",
