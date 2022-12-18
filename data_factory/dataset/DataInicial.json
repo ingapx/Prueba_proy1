@@ -1,0 +1,89 @@
+{
+	"name": "DataInicial",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "DataTC.csv",
+				"folderPath": "Banco/DataCruda",
+				"fileSystem": "raw"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "codbin",
+				"type": "String"
+			},
+			{
+				"name": "fecha_desembolso",
+				"type": "String"
+			},
+			{
+				"name": "fecha_activacion",
+				"type": "String"
+			},
+			{
+				"name": "NumMesesAct",
+				"type": "String"
+			},
+			{
+				"name": "fecha_cancelacion",
+				"type": "String"
+			},
+			{
+				"name": "NumMesesCanc",
+				"type": "String"
+			},
+			{
+				"name": "linea_credito",
+				"type": "String"
+			},
+			{
+				"name": "flg_excepcion_consolidado",
+				"type": "String"
+			},
+			{
+				"name": "PD",
+				"type": "String"
+			},
+			{
+				"name": "id_agencia",
+				"type": "String"
+			},
+			{
+				"name": "TasaPOS",
+				"type": "String"
+			},
+			{
+				"name": "IdFlujoVenta",
+				"type": "String"
+			},
+			{
+				"name": "IdCanalVenta",
+				"type": "String"
+			},
+			{
+				"name": "idPerfilTC",
+				"type": "String"
+			},
+			{
+				"name": "IdRangoIngreso",
+				"type": "String"
+			},
+			{
+				"name": "edad",
+				"type": "String"
+			}
+		]
+	}
+}
