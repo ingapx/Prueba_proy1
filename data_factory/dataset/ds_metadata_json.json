@@ -18,8 +18,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "@dataset().application",
-				"folderPath": "@dataset().filename",
+				"fileName": "@dataset().filename",
+				"folderPath": "@dataset().application",
 				"fileSystem": "metadata"
 			}
 		},
