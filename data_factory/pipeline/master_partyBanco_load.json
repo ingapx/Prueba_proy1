@@ -98,13 +98,16 @@
 											"value": "'@{string('sharedknow')}'",
 											"type": "Expression"
 										},
-										"creation_user": {
-											"value": "'@{pipeline().globalParameters.creation_user}'",
-											"type": "Expression"
-										},
+										"creation_user": "\"Grupo2\"",
 										"process_date": {
 											"value": "'@{variables('process_date')}'",
 											"type": "Expression"
+										}
+									},
+									"datasetParameters": {
+										"sourceBancoUser": {
+											"application": "banco",
+											"filename": "data\\dataInicial"
 										}
 									}
 								},
