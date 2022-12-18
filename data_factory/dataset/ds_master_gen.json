@@ -1,0 +1,49 @@
+{
+	"name": "ds_master_gen",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "FS_LS_Banco01",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"application": {
+				"type": "string"
+			},
+			"filename": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"location": {
+				"type": "FileServerLocation",
+				"fileName": "@concat(dataset().filename,'.xlsx')",
+				"folderPath": "@dataset().application"
+			},
+			"firstRowAsHeader": true
+		},
+		"schema": [
+			{
+				"name": "ID_AGENCIA",
+				"type": "String"
+			},
+			{
+				"name": "AGENCIA",
+				"type": "String"
+			},
+			{
+				"name": "DEPARTAMENTO",
+				"type": "String"
+			},
+			{
+				"name": "PROVINCIA",
+				"type": "String"
+			},
+			{
+				"name": "DISTRITO",
+				"type": "String"
+			}
+		]
+	}
+}
