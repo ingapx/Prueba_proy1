@@ -12,7 +12,7 @@
 						"referenceName": "ds_raw_parquetBanco",
 						"type": "DatasetReference"
 					},
-					"name": "sourceKnowUser"
+					"name": "sourceBancoUser"
 				}
 			],
 			"sinks": [
@@ -43,13 +43,13 @@
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
-				"     format: 'parquet') ~> sourceKnowUser",
-				"sourceKnowUser derive(record_source = $record_source,",
+				"     format: 'parquet') ~> sourceBancoUser",
+				"sourceBancoUser derive(record_source = $record_source,",
 				"          load_date = $load_date,",
 				"          creation_user = $creation_user,",
 				"          is_active = 1,",
 				"          process_date = $process_date,",
-				"          hash_unique = crc32(Email,Reputation,UpVotes,DownVotes,Views)) ~> addDerivedColumn",
+				"          hash_unique = crc32(fecha_desembolso,fecha_cancelacion,linea_credito,IdRangoIngreso,IdCanalVenta)) ~> addDerivedColumn",
 				"addDerivedColumn select(mapColumn(",
 				"          party_id = Id,",
 				"          creation_date = CreationDate,",
