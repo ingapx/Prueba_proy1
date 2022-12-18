@@ -1,5 +1,5 @@
 {
-	"name": "core_lakehouse_raw",
+	"name": "core_banco_raw",
 	"properties": {
 		"description": "Pipeline de datos para poblar el modelo corporativo, zona master",
 		"activities": [
@@ -22,25 +22,7 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"pipeline": {
-						"referenceName": "raw_core_load",
-						"type": "PipelineReference"
-					},
-					"waitOnCompletion": true,
-					"parameters": {
-						"year_date": {
-							"value": "@variables('year_date')",
-							"type": "Expression"
-						},
-						"month_date": {
-							"value": "@variables('month_date')",
-							"type": "Expression"
-						},
-						"r_process_date": {
-							"value": "@pipeline().parameters.process_date",
-							"type": "Expression"
-						}
-					}
+					"waitOnCompletion": true
 				}
 			},
 			{
