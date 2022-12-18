@@ -9,7 +9,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "master_party_load",
+						"referenceName": "master_partyBanco_load",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true,
