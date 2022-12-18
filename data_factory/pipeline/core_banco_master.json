@@ -22,7 +22,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "master_core_load",
+						"referenceName": "master_coreBanco_load",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true,

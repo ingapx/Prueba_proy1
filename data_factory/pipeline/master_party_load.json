@@ -106,18 +106,6 @@
 											"value": "'@{variables('process_date')}'",
 											"type": "Expression"
 										}
-									},
-									"datasetParameters": {
-										"sourceKnowUser": {
-											"application": {
-												"value": "@string('sharedknow')",
-												"type": "Expression"
-											},
-											"filename": {
-												"value": "@concat('userstest/year=',pipeline().parameters.year_date,\n'/month=',pipeline().parameters.month_date, '/userstest.parquet')",
-												"type": "Expression"
-											}
-										}
 									}
 								},
 								"compute": {
