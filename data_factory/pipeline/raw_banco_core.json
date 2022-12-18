@@ -27,7 +27,7 @@
 							},
 							{
 								"name": "registroFuente",
-								"value": "banco"
+								"value": "Grupo2_Banco"
 							}
 						],
 						"storeSettings": {
@@ -55,7 +55,7 @@
 							{
 								"source": {
 									"name": "codbin",
-									"type": "Int32",
+									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
@@ -91,7 +91,7 @@
 							{
 								"source": {
 									"name": "NumMesesAct",
-									"type": "Int32",
+									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
@@ -115,7 +115,7 @@
 							{
 								"source": {
 									"name": "NumMesesCanc",
-									"type": "Int32",
+									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
@@ -127,7 +127,7 @@
 							{
 								"source": {
 									"name": "linea_credito",
-									"type": "Int32",
+									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
@@ -235,11 +235,33 @@
 							{
 								"source": {
 									"name": "edad",
-									"type": "Int32",
+									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
 									"name": "edad",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "fechaCarga",
+									"type": "String"
+								},
+								"sink": {
+									"name": "fechaCarga",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "registroFuente",
+									"type": "String"
+								},
+								"sink": {
+									"name": "registroFuente",
 									"type": "String",
 									"physicalType": "UTF8"
 								}
@@ -326,7 +348,7 @@
 							{
 								"source": {
 									"name": "ID_AGENCIA",
-									"type": "Int32",
+									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
@@ -379,6 +401,17 @@
 								},
 								"sink": {
 									"name": "DISTRITO",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "fechaCarga",
+									"type": "String"
+								},
+								"sink": {
+									"name": "fechaCarga",
 									"type": "String",
 									"physicalType": "UTF8"
 								}
@@ -465,7 +498,7 @@
 							{
 								"source": {
 									"name": "idFlujoVenta",
-									"type": "Int32",
+									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
@@ -494,6 +527,17 @@
 								},
 								"sink": {
 									"name": "FlujoVentaDetalle",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "fechaCarga",
+									"type": "String"
+								},
+								"sink": {
+									"name": "fechaCarga",
 									"type": "String",
 									"physicalType": "UTF8"
 								}
@@ -580,7 +624,7 @@
 							{
 								"source": {
 									"name": "idPerfilTC",
-									"type": "Int32",
+									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
@@ -597,6 +641,17 @@
 								},
 								"sink": {
 									"name": "PerfilTC",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "fechaCarga",
+									"type": "String"
+								},
+								"sink": {
+									"name": "fechaCarga",
 									"type": "String",
 									"physicalType": "UTF8"
 								}
@@ -683,7 +738,7 @@
 							{
 								"source": {
 									"name": "codbin",
-									"type": "Int32",
+									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
@@ -707,11 +762,22 @@
 							{
 								"source": {
 									"name": "orden",
-									"type": "Int32",
+									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
 									"name": "orden",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "fechaCarga",
+									"type": "String"
+								},
+								"sink": {
+									"name": "fechaCarga",
 									"type": "String",
 									"physicalType": "UTF8"
 								}
