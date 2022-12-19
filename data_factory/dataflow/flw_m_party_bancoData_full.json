@@ -1,5 +1,5 @@
 {
-	"name": "flw_m_party_user_full",
+	"name": "flw_m_party_bancoData_full",
 	"properties": {
 		"folder": {
 			"name": "02_master_dataflow"

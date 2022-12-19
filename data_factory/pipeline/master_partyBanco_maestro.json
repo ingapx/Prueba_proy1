@@ -1,0 +1,200 @@
+{
+	"name": "master_partyBanco_maestro",
+	"properties": {
+		"activities": [
+			{
+				"name": "SetProcessDate",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "process_date",
+					"value": {
+						"value": "@concat(pipeline().parameters.year_date,'-',\npipeline().parameters.month_date,'-01')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "ValidPartyFullLoad",
+				"type": "GetMetadata",
+				"dependsOn": [
+					{
+						"activity": "SetProcessDate",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "ds_general_parquet",
+						"type": "DatasetReference",
+						"parameters": {
+							"zona": "master",
+							"application": "banco",
+							"filename": "m_party"
+						}
+					},
+					"fieldList": [
+						"exists",
+						"itemName"
+					],
+					"storeSettings": {
+						"type": "AzureBlobFSReadSettings",
+						"recursive": true,
+						"enablePartitionDiscovery": false
+					}
+				}
+			},
+			{
+				"name": "IfPartyFullLoad",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "ValidPartyFullLoad",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@activity('ValidPartyFullLoad').output.exists",
+						"type": "Expression"
+					},
+					"ifFalseActivities": [
+						{
+							"name": "FullLoadParty",
+							"type": "ExecuteDataFlow",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"dataflow": {
+									"referenceName": "flw_m_party_bancoData_full",
+									"type": "DataFlowReference",
+									"parameters": {
+										"load_date": {
+											"value": "'@{utcNow()}'",
+											"type": "Expression"
+										},
+										"record_source": {
+											"value": "'@{string('banco')}'",
+											"type": "Expression"
+										},
+										"creation_user": {
+											"value": "'@{string('grupo2')}'",
+											"type": "Expression"
+										},
+										"process_date": {
+											"value": "'@{variables('process_date')}'",
+											"type": "Expression"
+										}
+									},
+									"datasetParameters": {
+										"sourceBancoDataInicial": {
+											"application": "banco",
+											"filename": "data/dataInicial"
+										}
+									}
+								},
+								"compute": {
+									"coreCount": 8,
+									"computeType": "General"
+								},
+								"traceLevel": "Fine"
+							}
+						}
+					],
+					"ifTrueActivities": [
+						{
+							"name": "IncrementalLoadParty",
+							"type": "ExecuteDataFlow",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"dataflow": {
+									"referenceName": "flw_m_party_bancoData_incremental",
+									"type": "DataFlowReference",
+									"parameters": {
+										"load_date": {
+											"value": "'@{utcNow()}'",
+											"type": "Expression"
+										},
+										"record_source": {
+											"value": "'@{string('banco')}'",
+											"type": "Expression"
+										},
+										"creation_user": {
+											"value": "'@{string('grupo2')}'",
+											"type": "Expression"
+										},
+										"process_date": {
+											"value": "'@{variables('process_date')}'",
+											"type": "Expression"
+										}
+									},
+									"datasetParameters": {
+										"sourceKnowUser": {
+											"application": "banco",
+											"filename": "data/dataInicial"
+										}
+									}
+								},
+								"compute": {
+									"coreCount": 8,
+									"computeType": "General"
+								},
+								"traceLevel": "Fine"
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"year_date": {
+				"type": "string",
+				"defaultValue": "2008"
+			},
+			"month_date": {
+				"type": "string",
+				"defaultValue": "01"
+			}
+		},
+		"variables": {
+			"process_date": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "02_master_models"
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-12-06T19:43:13Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
