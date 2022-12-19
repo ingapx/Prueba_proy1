@@ -153,7 +153,8 @@
 		],
 		"parameters": {
 			"process_date": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "@utcNow()"
 			}
 		},
 		"variables": {
