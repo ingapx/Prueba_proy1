@@ -43,12 +43,15 @@
 			"month_date": {
 				"type": "string"
 			},
-			"process_date": {
+			"r_process_date": {
 				"type": "string"
 			}
 		},
 		"variables": {
 			"r_process_result": {
+				"type": "String"
+			},
+			"fecha": {
 				"type": "String"
 			}
 		},
