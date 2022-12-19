@@ -57,7 +57,7 @@
 				}
 			},
 			{
-				"name": "If Condition1",
+				"name": "CondicionValidacion",
 				"type": "IfCondition",
 				"dependsOn": [
 					{
