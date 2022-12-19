@@ -151,10 +151,7 @@
 														"referenceName": "ds_master_gen",
 														"type": "DatasetReference",
 														"parameters": {
-															"application": {
-																"value": "@variables('nombreInputAplicacion')",
-																"type": "Expression"
-															},
+															"application": "Banco",
 															"filename": "Maestros\\Agencias\\agencias"
 														}
 													}
@@ -164,10 +161,7 @@
 														"referenceName": "ds_raw_parquetBanco",
 														"type": "DatasetReference",
 														"parameters": {
-															"application": {
-																"value": "@variables('nombreOutputAplicacion')",
-																"type": "Expression"
-															},
+															"application": "banco",
 															"filename": "maestro\\agencias"
 														}
 													}
