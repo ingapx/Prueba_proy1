@@ -160,7 +160,7 @@
 									"datasetParameters": {
 										"sourceDataInicial": {
 											"application": "banco",
-											"filename": "data\\dataInicial"
+											"filename": "data/dataInicial"
 										}
 									}
 								},
