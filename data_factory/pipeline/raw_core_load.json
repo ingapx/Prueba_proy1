@@ -3,38 +3,24 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "KnowLoad",
+				"name": "DataInicialLoad",
 				"type": "ExecutePipeline",
 				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "raw_know_load",
+						"referenceName": "raw_banco_dataI",
 						"type": "PipelineReference"
 					},
-					"waitOnCompletion": true,
-					"parameters": {
-						"year_date": {
-							"value": "@pipeline().parameters.year_date",
-							"type": "Expression"
-						},
-						"month_date": {
-							"value": "@pipeline().parameters.month_date",
-							"type": "Expression"
-						},
-						"process_date": {
-							"value": "@pipeline().parameters.r_process_date",
-							"type": "Expression"
-						}
-					}
+					"waitOnCompletion": true
 				}
 			},
 			{
-				"name": "G4Load",
+				"name": "MaestrosLoad",
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "KnowLoad",
+						"activity": "DataInicialLoad",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -43,24 +29,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "raw_ga4_load",
+						"referenceName": "raw_banco_maestro",
 						"type": "PipelineReference"
 					},
-					"waitOnCompletion": true,
-					"parameters": {
-						"year_date": {
-							"value": "@pipeline().parameters.year_date",
-							"type": "Expression"
-						},
-						"month_date": {
-							"value": "@pipeline().parameters.month_date",
-							"type": "Expression"
-						},
-						"process_date": {
-							"value": "@pipeline().parameters.r_process_date",
-							"type": "Expression"
-						}
-					}
+					"waitOnCompletion": true
 				}
 			}
 		],

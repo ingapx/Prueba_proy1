@@ -1,0 +1,9 @@
+{
+	"name": "raw_banco_dataI",
+	"properties": {
+		"folder": {
+			"name": "01_raw_source/banco"
+		},
+		"annotations": []
+	}
+}
