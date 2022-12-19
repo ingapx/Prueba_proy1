@@ -3,8 +3,8 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "carga_dataInicial",
-				"type": "Copy",
+				"name": "ValidarProceso",
+				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -16,70 +16,155 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "DelimitedTextSource",
-						"additionalColumns": [
-							{
-								"name": "fechaCarga",
-								"value": {
-									"value": "@utcNow()",
-									"type": "Expression"
-								}
-							},
-							{
-								"name": "registroFuente",
-								"value": "Grupo2Banco"
-							}
-						],
+						"type": "JsonSource",
 						"storeSettings": {
-							"type": "FileServerReadSettings",
+							"type": "AzureBlobFSReadSettings",
 							"recursive": true,
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
-							"type": "DelimitedTextReadSettings"
+							"type": "JsonReadSettings"
 						}
 					},
-					"sink": {
-						"type": "ParquetSink",
-						"storeSettings": {
-							"type": "AzureBlobFSWriteSettings"
-						},
-						"formatSettings": {
-							"type": "ParquetWriteSettings"
-						}
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "ds_source_banco_csv",
-						"type": "DatasetReference",
-						"parameters": {
-							"application": "Banco",
-							"filename": "DataCruda\\DataTC"
-						}
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "ds_raw_parquetBanco",
+					"dataset": {
+						"referenceName": "ds_metadata_json",
 						"type": "DatasetReference",
 						"parameters": {
 							"application": "banco",
-							"filename": "data\\dataInicial"
+							"filename": "plan_config.json"
 						}
 					}
-				]
+				}
+			},
+			{
+				"name": "SetConfigParam",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "ValidarProceso",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "last_update",
+					"value": {
+						"value": "@activity('ValidarProceso').output.firstRow.last_update",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "If Condition1",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "SetConfigParam",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@greater(ticks(concat(pipeline().parameters.process_date,'T00:00:00.0000000Z')),\nticks(concat(variables('last_update'),'T00:00:00.0000000Z')))",
+						"type": "Expression"
+					},
+					"ifTrueActivities": [
+						{
+							"name": "carga_dataInicial_copy1",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"additionalColumns": [
+										{
+											"name": "fechaCarga",
+											"value": {
+												"value": "@utcNow()",
+												"type": "Expression"
+											}
+										},
+										{
+											"name": "registroFuente",
+											"value": "Grupo2Banco"
+										}
+									],
+									"storeSettings": {
+										"type": "FileServerReadSettings",
+										"recursive": true,
+										"enablePartitionDiscovery": false
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"sink": {
+									"type": "ParquetSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "ParquetWriteSettings"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "ds_source_banco_csv",
+									"type": "DatasetReference",
+									"parameters": {
+										"application": "Banco",
+										"filename": "DataCruda\\DataTC"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_raw_parquetBanco",
+									"type": "DatasetReference",
+									"parameters": {
+										"application": "banco",
+										"filename": "data\\dataInicial"
+									}
+								}
+							]
+						}
+					]
+				}
 			}
 		],
+		"parameters": {
+			"process_date": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"last_update": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "01_raw_source/banco"
 		},
