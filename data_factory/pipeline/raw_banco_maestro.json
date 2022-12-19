@@ -643,7 +643,8 @@
 		],
 		"parameters": {
 			"Action": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "@item()"
 			}
 		},
 		"variables": {
