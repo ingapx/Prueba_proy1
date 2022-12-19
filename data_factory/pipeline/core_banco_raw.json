@@ -28,9 +28,18 @@
 					},
 					"waitOnCompletion": true,
 					"parameters": {
-						"year_date": "@variables('year_date')",
-						"month_date": "@variables('month_date')",
-						"r_process_date": "@pipeline().parameters.process_date"
+						"year_date": {
+							"value": "@variables('year_date')",
+							"type": "Expression"
+						},
+						"month_date": {
+							"value": "@variables('month_date')",
+							"type": "Expression"
+						},
+						"r_process_date": {
+							"value": "@pipeline().parameters.process_date",
+							"type": "Expression"
+						}
 					}
 				}
 			},
@@ -125,7 +134,7 @@
 						"referenceName": "ds_metadata_json",
 						"type": "DatasetReference",
 						"parameters": {
-							"application": "sharedknow",
+							"application": "banco",
 							"filename": "plan_config.json"
 						}
 					}
@@ -135,7 +144,7 @@
 						"referenceName": "ds_metadata_json",
 						"type": "DatasetReference",
 						"parameters": {
-							"application": "sharedknow",
+							"application": "banco",
 							"filename": "plan_config.json"
 						}
 					}
