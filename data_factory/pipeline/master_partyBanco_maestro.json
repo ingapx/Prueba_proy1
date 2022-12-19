@@ -76,8 +76,14 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "flw_m_party_bancoMaestro_full",
-						"type": "DataFlowReference"
+						"referenceName": "flw_m_party_bancoMaestros_full",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"sourceBancoDataInicial": {
+								"application": "banco",
+								"filename": "maestro/agencias"
+							}
+						}
 					},
 					"compute": {
 						"coreCount": 8,
@@ -89,12 +95,10 @@
 		],
 		"parameters": {
 			"year_date": {
-				"type": "string",
-				"defaultValue": "2008"
+				"type": "string"
 			},
 			"month_date": {
-				"type": "string",
-				"defaultValue": "01"
+				"type": "string"
 			}
 		},
 		"variables": {

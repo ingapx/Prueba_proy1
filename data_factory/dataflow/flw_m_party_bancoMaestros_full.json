@@ -1,0 +1,130 @@
+{
+	"name": "flw_m_party_bancoMaestros_full",
+	"properties": {
+		"folder": {
+			"name": "02_master_dataflow"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_raw_parquetBanco",
+						"type": "DatasetReference"
+					},
+					"name": "sourceBancoDataInicial"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_master_parquet",
+						"type": "DatasetReference"
+					},
+					"name": "sinkMasterParty",
+					"description": "Slowly Changing Dimension Type 2"
+				}
+			],
+			"transformations": [
+				{
+					"name": "addDerivedColumn"
+				},
+				{
+					"name": "selectColumn"
+				}
+			],
+			"scriptLines": [
+				"parameters{",
+				"     load_date as string,",
+				"     record_source as string,",
+				"     creation_user as string,",
+				"     process_date as string",
+				"}",
+				"source(output(",
+				"          codbin as string,",
+				"          fecha_desembolso as string,",
+				"          fecha_activacion as string,",
+				"          NumMesesAct as string,",
+				"          fecha_cancelacion as string,",
+				"          NumMesesCanc as string,",
+				"          linea_credito as string,",
+				"          flg_excepcion_consolidado as string,",
+				"          PD as string,",
+				"          id_agencia as string,",
+				"          TasaPOS as string,",
+				"          IdFlujoVenta as string,",
+				"          IdCanalVenta as string,",
+				"          idPerfilTC as string,",
+				"          IdRangoIngreso as string,",
+				"          edad as string,",
+				"          fechaCarga as string,",
+				"          registroFuente as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     format: 'parquet',",
+				"     wildcardPaths:['banco/data/dataInicial.parquet']) ~> sourceBancoDataInicial",
+				"sourceBancoDataInicial derive(record_source = $record_source,",
+				"          load_date = $load_date,",
+				"          creation_user = $creation_user,",
+				"          is_active = 1,",
+				"          process_date = $process_date,",
+				"          hash_unique = crc32(fecha_desembolso,fecha_cancelacion,linea_credito,TasaPOS,IdCanalVenta)) ~> addDerivedColumn",
+				"addDerivedColumn select(mapColumn(",
+				"          codbin,",
+				"          fecha_desembolso,",
+				"          fecha_activacion,",
+				"          NumMesesAct,",
+				"          fecha_cancelacion,",
+				"          NumMesesCanc,",
+				"          linea_credito,",
+				"          flg_excepcion_consolidado,",
+				"          PD,",
+				"          id_agencia,",
+				"          TasaPOS,",
+				"          IdFlujoVenta,",
+				"          IdCanalVenta,",
+				"          idPerfilTC,",
+				"          IdRangoIngreso,",
+				"          edad,",
+				"          is_active,",
+				"          process_date,",
+				"          hash_unique",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectColumn",
+				"selectColumn sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'parquet',",
+				"     filePattern:'lakehouse/m_party/m_party[n].parquet',",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          codbin,",
+				"          fecha_desembolso,",
+				"          fecha_activacion,",
+				"          NumMesesAct,",
+				"          fecha_cancelacion,",
+				"          NumMesesCanc,",
+				"          linea_credito,",
+				"          flg_excepcion_consolidado,",
+				"          PD,",
+				"          id_agencia,",
+				"          TasaPOS,",
+				"          IdFlujoVenta,",
+				"          IdCanalVenta,",
+				"          idPerfilTC,",
+				"          IdRangoIngreso,",
+				"          edad,",
+				"          is_active,",
+				"          process_date,",
+				"          hash_unique",
+				"     )) ~> sinkMasterParty"
+			]
+		}
+	}
+}
