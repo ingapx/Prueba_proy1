@@ -17,6 +17,19 @@
 				"typeProperties": {
 					"source": {
 						"type": "DelimitedTextSource",
+						"additionalColumns": [
+							{
+								"name": "fechaCarga",
+								"value": {
+									"value": "@utcNow()",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "registroFuente",
+								"value": "Grupo2Banco"
+							}
+						],
 						"storeSettings": {
 							"type": "FileServerReadSettings",
 							"recursive": true,
