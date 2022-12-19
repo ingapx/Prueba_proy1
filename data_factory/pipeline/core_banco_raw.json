@@ -98,7 +98,7 @@
 							},
 							{
 								"name": "last_zone",
-								"value": "all"
+								"value": "raw"
 							},
 							{
 								"name": "result_type",
