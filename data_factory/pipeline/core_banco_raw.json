@@ -4,7 +4,7 @@
 		"description": "Pipeline de datos para poblar el modelo corporativo, zona master",
 		"activities": [
 			{
-				"name": "RawLakeLoad",
+				"name": "RawBancoLoad",
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
@@ -22,7 +22,16 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"waitOnCompletion": true
+					"pipeline": {
+						"referenceName": "raw_core_load",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"year_date": "@variables('year_date')",
+						"month_date": "@variables('month_date')",
+						"r_process_date": "@pipeline().parameters.process_date"
+					}
 				}
 			},
 			{
@@ -57,7 +66,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "RawLakeLoad",
+						"activity": "RawBancoLoad",
 						"dependencyConditions": [
 							"Succeeded"
 						]
