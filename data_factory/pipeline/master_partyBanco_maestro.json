@@ -56,8 +56,8 @@
 				}
 			},
 			{
-				"name": "Data flow1",
-				"type": "ExecuteDataFlow",
+				"name": "ForEach_Flujo_Maestros",
+				"type": "ForEach",
 				"dependsOn": [
 					{
 						"activity": "ValidPartyFullLoad",
@@ -66,30 +66,150 @@
 						]
 					}
 				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
 				"userProperties": [],
 				"typeProperties": {
-					"dataflow": {
-						"referenceName": "flw_m_party_bancoMaestros_full",
-						"type": "DataFlowReference",
-						"datasetParameters": {
-							"sourceBancoDataInicial": {
-								"application": "banco",
-								"filename": "maestro/agencias"
+					"items": {
+						"value": "@variables('MaestrosArray')",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "sw_maestros",
+							"type": "Switch",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"cases": [
+									{
+										"value": "agencias",
+										"activities": [
+											{
+												"name": "df_maestro_agencia",
+												"type": "ExecuteDataFlow",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"compute": {
+														"coreCount": 8,
+														"computeType": "General"
+													},
+													"traceLevel": "Fine"
+												}
+											}
+										]
+									},
+									{
+										"value": "flujoVenta",
+										"activities": [
+											{
+												"name": "df_maestro_flujoVenta",
+												"type": "ExecuteDataFlow",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"compute": {
+														"coreCount": 8,
+														"computeType": "General"
+													},
+													"traceLevel": "Fine"
+												}
+											}
+										]
+									},
+									{
+										"value": "perfil",
+										"activities": [
+											{
+												"name": "df_maestro_perfil",
+												"type": "ExecuteDataFlow",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"compute": {
+														"coreCount": 8,
+														"computeType": "General"
+													},
+													"traceLevel": "Fine"
+												}
+											}
+										]
+									},
+									{
+										"value": "producto",
+										"activities": [
+											{
+												"name": "df_maestro_producto",
+												"type": "ExecuteDataFlow",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"compute": {
+														"coreCount": 8,
+														"computeType": "General"
+													},
+													"traceLevel": "Fine"
+												}
+											}
+										]
+									},
+									{
+										"value": "rangoIngreso",
+										"activities": [
+											{
+												"name": "df_maestro_rangoIngreso",
+												"type": "ExecuteDataFlow",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"compute": {
+														"coreCount": 8,
+														"computeType": "General"
+													},
+													"traceLevel": "Fine"
+												}
+											}
+										]
+									}
+								]
 							}
 						}
-					},
-					"compute": {
-						"coreCount": 8,
-						"computeType": "General"
-					},
-					"traceLevel": "Fine"
+					]
 				}
 			}
 		],
@@ -99,11 +219,25 @@
 			},
 			"month_date": {
 				"type": "string"
+			},
+			"Action": {
+				"type": "string",
+				"defaultValue": "@item()"
 			}
 		},
 		"variables": {
 			"process_date": {
 				"type": "String"
+			},
+			"MaestrosArray": {
+				"type": "Array",
+				"defaultValue": [
+					"Agencias",
+					"FlujoVentas",
+					"Perfil",
+					"Productos",
+					"RangoIngreso"
+				]
 			}
 		},
 		"folder": {

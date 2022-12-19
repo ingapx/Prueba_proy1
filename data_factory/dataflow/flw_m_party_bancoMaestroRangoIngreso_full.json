@@ -1,5 +1,5 @@
 {
-	"name": "flw_m_party_bancoMaestroAgencia_full",
+	"name": "flw_m_party_bancoMaestroRangoIngreso_full",
 	"properties": {
 		"folder": {
 			"name": "02_master_dataflow"

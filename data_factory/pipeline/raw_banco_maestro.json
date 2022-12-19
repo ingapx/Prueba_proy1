@@ -627,7 +627,7 @@
 														"type": "DatasetReference",
 														"parameters": {
 															"application": "@variables('nombreOutputAplicacion')",
-															"filename": "maestro\\rangoInreso"
+															"filename": "maestro\\rangoIngreso"
 														}
 													}
 												]
