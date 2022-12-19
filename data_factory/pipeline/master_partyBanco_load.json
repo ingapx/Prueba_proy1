@@ -95,13 +95,22 @@
 											"type": "Expression"
 										},
 										"record_source": {
-											"value": "'@{string('sharedknow')}'",
+											"value": "'@{string('banco')}'",
 											"type": "Expression"
 										},
-										"creation_user": "\"Grupo2\"",
+										"creation_user": {
+											"value": "'@{string('grupo2')}'",
+											"type": "Expression"
+										},
 										"process_date": {
 											"value": "'@{variables('process_date')}'",
 											"type": "Expression"
+										}
+									},
+									"datasetParameters": {
+										"sourceBancoDataInicial": {
+											"application": "banco",
+											"filename": "data/dataInicial"
 										}
 									}
 								},
@@ -136,11 +145,11 @@
 											"type": "Expression"
 										},
 										"record_source": {
-											"value": "'@{string('sharedknow')}'",
+											"value": "'@{string('banco')}'",
 											"type": "Expression"
 										},
 										"creation_user": {
-											"value": "'@{pipeline().globalParameters.creation_user}'",
+											"value": "'@{string('grupo2')}'",
 											"type": "Expression"
 										},
 										"process_date": {
