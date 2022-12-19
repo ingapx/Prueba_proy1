@@ -261,7 +261,7 @@
 						"referenceName": "ds_master_gen",
 						"type": "DatasetReference",
 						"parameters": {
-							"application": "Banco",
+							"application": "@variables('nombreInputAplicacion')",
 							"filename": "Maestros\\FlujoVenta\\flujoVenta"
 						}
 					}
@@ -271,7 +271,7 @@
 						"referenceName": "ds_raw_parquetBanco",
 						"type": "DatasetReference",
 						"parameters": {
-							"application": "banco",
+							"application": "@variables('nombreOutputAplicacion')",
 							"filename": "maestro\\flujoVenta"
 						}
 					}
@@ -375,7 +375,7 @@
 						"referenceName": "ds_master_gen",
 						"type": "DatasetReference",
 						"parameters": {
-							"application": "Banco",
+							"application": "@variables('nombreInputAplicacion')",
 							"filename": "Maestros\\Perfil\\Perfil"
 						}
 					}
@@ -385,7 +385,7 @@
 						"referenceName": "ds_raw_parquetBanco",
 						"type": "DatasetReference",
 						"parameters": {
-							"application": "banco",
+							"application": "@variables('nombreOutputAplicacion')",
 							"filename": "maestro\\perfil"
 						}
 					}
@@ -501,7 +501,7 @@
 						"referenceName": "ds_master_gen",
 						"type": "DatasetReference",
 						"parameters": {
-							"application": "Banco",
+							"application": "@variables('nombreInputAplicacion')",
 							"filename": "Maestros\\Productos\\Productos"
 						}
 					}
@@ -511,7 +511,7 @@
 						"referenceName": "ds_raw_parquetBanco",
 						"type": "DatasetReference",
 						"parameters": {
-							"application": "banco",
+							"application": "@variables('nombreOutputAplicacion')",
 							"filename": "maestro\\productos"
 						}
 					}
@@ -604,7 +604,7 @@
 						"referenceName": "ds_master_gen",
 						"type": "DatasetReference",
 						"parameters": {
-							"application": "Banco",
+							"application": "@variables('nombreInputAplicacion')",
 							"filename": "Maestros\\RangoIngreso\\RangoIngreso"
 						}
 					}
@@ -614,7 +614,7 @@
 						"referenceName": "ds_raw_parquetBanco",
 						"type": "DatasetReference",
 						"parameters": {
-							"application": "banco",
+							"application": "@variables('nombreOutputAplicacion')",
 							"filename": "maestro\\rangoInreso"
 						}
 					}
