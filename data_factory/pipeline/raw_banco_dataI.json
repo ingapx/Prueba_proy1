@@ -65,18 +65,12 @@
 						"dependencyConditions": [
 							"Succeeded"
 						]
-					},
-					{
-						"activity": "Set variable1",
-						"dependencyConditions": [
-							"Succeeded"
-						]
 					}
 				],
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@greater(ticks(variables('fecha')),\nticks(concat(variables('last_update'),'T00:00:00.0000000Z')))",
+						"value": "@greater(ticks(concat(pipeline().parameters.process_date,'T00:00:00.0000000Z')),\nticks(concat(variables('last_update'),'T00:00:00.0000000Z')))",
 						"type": "Expression"
 					},
 					"ifTrueActivities": [
@@ -159,19 +153,6 @@
 						}
 					]
 				}
-			},
-			{
-				"name": "Set variable1",
-				"type": "SetVariable",
-				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "fecha",
-					"value": {
-						"value": "@utcNow()",
-						"type": "Expression"
-					}
-				}
 			}
 		],
 		"parameters": {
@@ -181,9 +162,6 @@
 		},
 		"variables": {
 			"last_update": {
-				"type": "String"
-			},
-			"fecha": {
 				"type": "String"
 			}
 		},

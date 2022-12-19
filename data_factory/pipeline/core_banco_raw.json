@@ -35,6 +35,10 @@
 						"month_date": {
 							"value": "@variables('month_date')",
 							"type": "Expression"
+						},
+						"r_process_date": {
+							"value": "@pipeline().parameters.process_date",
+							"type": "Expression"
 						}
 					}
 				}
@@ -160,9 +164,6 @@
 				"type": "String"
 			},
 			"process_result": {
-				"type": "String"
-			},
-			"fecha": {
 				"type": "String"
 			}
 		},

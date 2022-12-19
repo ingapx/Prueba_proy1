@@ -12,7 +12,13 @@
 						"referenceName": "raw_banco_dataI",
 						"type": "PipelineReference"
 					},
-					"waitOnCompletion": true
+					"waitOnCompletion": true,
+					"parameters": {
+						"process_date": {
+							"value": "@pipeline().parameters.r_process_date",
+							"type": "Expression"
+						}
+					}
 				}
 			},
 			{
@@ -49,9 +55,6 @@
 		},
 		"variables": {
 			"r_process_result": {
-				"type": "String"
-			},
-			"fecha": {
 				"type": "String"
 			}
 		},
