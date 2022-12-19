@@ -156,6 +156,12 @@
 											"value": "'@{variables('process_date')}'",
 											"type": "Expression"
 										}
+									},
+									"datasetParameters": {
+										"sourceKnowUser": {
+											"application": "banco",
+											"filename": "data/dataInicial"
+										}
 									}
 								},
 								"compute": {
