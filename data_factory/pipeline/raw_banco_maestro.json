@@ -129,7 +129,10 @@
 						"referenceName": "ds_master_gen",
 						"type": "DatasetReference",
 						"parameters": {
-							"application": "Banco",
+							"application": {
+								"value": "@variables('nombreInputAplicacion')",
+								"type": "Expression"
+							},
 							"filename": "Maestros\\Agencias\\agencias"
 						}
 					}
@@ -139,7 +142,10 @@
 						"referenceName": "ds_raw_parquetBanco",
 						"type": "DatasetReference",
 						"parameters": {
-							"application": "banco",
+							"application": {
+								"value": "@variables('nombreOutputAplicacion')",
+								"type": "Expression"
+							},
 							"filename": "maestro\\agencias"
 						}
 					}
@@ -613,8 +619,41 @@
 						}
 					}
 				]
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@variables('maestrosArray')",
+						"type": "Expression"
+					},
+					"isSequential": true
+				}
 			}
 		],
+		"variables": {
+			"maestrosArray": {
+				"type": "Array",
+				"defaultValue": [
+					"agencias",
+					"flujo",
+					"perfil",
+					"producto",
+					"rango"
+				]
+			},
+			"nombreInputAplicacion": {
+				"type": "String",
+				"defaultValue": "Banco"
+			},
+			"nombreOutputAplicacion": {
+				"type": "String",
+				"defaultValue": "banco"
+			}
+		},
 		"folder": {
 			"name": "01_raw_source/banco"
 		},
