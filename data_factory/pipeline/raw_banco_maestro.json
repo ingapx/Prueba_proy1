@@ -22,7 +22,7 @@
 							"typeProperties": {
 								"cases": [
 									{
-										"value": "Agecias",
+										"value": "Agencias",
 										"activities": [
 											{
 												"name": "carga_maestro_agencia_copy1_copy1",
@@ -652,7 +652,11 @@
 			"maestrosArray": {
 				"type": "Array",
 				"defaultValue": [
-					"[\"Maestros\\Agencias\\agencias\", \"Maestros\\FlujoVenta\\flujoVenta\", \"Maestros\\Perfil\\Perfil\", \"Maestros\\Productos\\Productos\", \"Maestros\\RangoIngreso\\RangoIngreso\"]"
+					"Agencias",
+					"FlujoVentas",
+					"Perfil",
+					"Productos",
+					"RangoIngreso"
 				]
 			},
 			"nombreInputAplicacion": {
