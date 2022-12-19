@@ -24,6 +24,30 @@
 						}
 					}
 				}
+			},
+			{
+				"name": "Execute Pipeline1",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "MasterPartyLoad",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "master_partyBanco_maestro",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"year_date": "@pipeline().parameters.year_date",
+						"month_date": "@pipeline().parameters.month_date"
+					}
+				}
 			}
 		],
 		"parameters": {

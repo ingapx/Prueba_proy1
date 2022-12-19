@@ -12,7 +12,7 @@
 						"referenceName": "ds_raw_parquetBanco",
 						"type": "DatasetReference"
 					},
-					"name": "sourceBancoDataInicial"
+					"name": "sourceBancoMaestros"
 				}
 			],
 			"sinks": [
@@ -64,8 +64,8 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
 				"     format: 'parquet',",
-				"     wildcardPaths:['banco/data/dataInicial.parquet']) ~> sourceBancoDataInicial",
-				"sourceBancoDataInicial derive(record_source = $record_source,",
+				"     wildcardPaths:['banco/data/dataInicial.parquet']) ~> sourceBancoMaestros",
+				"sourceBancoMaestros derive(record_source = $record_source,",
 				"          load_date = $load_date,",
 				"          creation_user = $creation_user,",
 				"          is_active = 1,",
