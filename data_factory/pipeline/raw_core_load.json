@@ -43,7 +43,7 @@
 			"month_date": {
 				"type": "string"
 			},
-			"r_process_date": {
+			"process_date": {
 				"type": "string"
 			}
 		},
