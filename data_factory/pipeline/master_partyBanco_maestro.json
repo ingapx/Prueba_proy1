@@ -86,7 +86,7 @@
 								},
 								"cases": [
 									{
-										"value": "agencias",
+										"value": "Agencias",
 										"activities": [
 											{
 												"name": "df_maestro_agencia",
@@ -142,7 +142,7 @@
 										]
 									},
 									{
-										"value": "flujoVenta",
+										"value": "FlujoVentas",
 										"activities": [
 											{
 												"name": "df_maestro_flujoVenta",
@@ -198,7 +198,7 @@
 										]
 									},
 									{
-										"value": "perfil",
+										"value": "Perfil",
 										"activities": [
 											{
 												"name": "df_maestro_perfil",
@@ -251,7 +251,7 @@
 										]
 									},
 									{
-										"value": "producto",
+										"value": "Productos",
 										"activities": [
 											{
 												"name": "df_maestro_producto",
@@ -304,7 +304,7 @@
 										]
 									},
 									{
-										"value": "rangoIngreso",
+										"value": "RangoIngreso",
 										"activities": [
 											{
 												"name": "df_maestro_rangoIngreso",
