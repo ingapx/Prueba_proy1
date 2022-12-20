@@ -130,6 +130,10 @@
 												},
 												"userProperties": [],
 												"typeProperties": {
+													"dataflow": {
+														"referenceName": "flw_m_party_bancoMaestroFlujoVenta_full",
+														"type": "DataFlowReference"
+													},
 													"compute": {
 														"coreCount": 8,
 														"computeType": "General"
@@ -155,6 +159,10 @@
 												},
 												"userProperties": [],
 												"typeProperties": {
+													"dataflow": {
+														"referenceName": "flw_m_party_bancoMaestroPerfil_full",
+														"type": "DataFlowReference"
+													},
 													"compute": {
 														"coreCount": 8,
 														"computeType": "General"
@@ -180,6 +188,10 @@
 												},
 												"userProperties": [],
 												"typeProperties": {
+													"dataflow": {
+														"referenceName": "flw_m_party_bancoMaestroProductos_full",
+														"type": "DataFlowReference"
+													},
 													"compute": {
 														"coreCount": 8,
 														"computeType": "General"
@@ -205,6 +217,10 @@
 												},
 												"userProperties": [],
 												"typeProperties": {
+													"dataflow": {
+														"referenceName": "flw_m_party_bancoMaestroRangoIngreso_full",
+														"type": "DataFlowReference"
+													},
 													"compute": {
 														"coreCount": 8,
 														"computeType": "General"
