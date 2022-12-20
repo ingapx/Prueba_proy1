@@ -80,6 +80,10 @@
 							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
+								"on": {
+									"value": "@item()",
+									"type": "Expression"
+								},
 								"cases": [
 									{
 										"value": "agencias",
