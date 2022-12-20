@@ -103,7 +103,31 @@
 												"typeProperties": {
 													"dataflow": {
 														"referenceName": "flw_m_party_bancoMaestroAgencia_full",
-														"type": "DataFlowReference"
+														"type": "DataFlowReference",
+														"parameters": {
+															"load_date": {
+																"value": "'@{utcNow()}'",
+																"type": "Expression"
+															},
+															"record_source": {
+																"value": "'@{string('banco')}'",
+																"type": "Expression"
+															},
+															"creation_user": {
+																"value": "'@{string('grupo2')}'",
+																"type": "Expression"
+															},
+															"process_date": {
+																"value": "'@{variables('process_date')}'",
+																"type": "Expression"
+															}
+														},
+														"datasetParameters": {
+															"sourceBancoMaestroAgencia": {
+																"application": "banco",
+																"filename": "maestro/agencias"
+															}
+														}
 													},
 													"compute": {
 														"coreCount": 8,
