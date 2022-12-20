@@ -526,7 +526,7 @@
 														"type": "DatasetReference",
 														"parameters": {
 															"application": "@variables('nombreOutputAplicacion')",
-															"filename": "maestro\\productos"
+															"filename": "maestro\\producto"
 														}
 													}
 												]
