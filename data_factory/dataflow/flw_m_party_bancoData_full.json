@@ -97,7 +97,7 @@
 				"selectColumn sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'parquet',",
-				"     filePattern:'lakehouse/m_party/m_party[n].parquet',",
+				"     filePattern:'lakehouse/m_party_data/m_party_data[n].parquet',",
 				"     umask: 0022,",
 				"     preCommands: [],",
 				"     postCommands: [],",
