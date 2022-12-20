@@ -101,6 +101,10 @@
 												},
 												"userProperties": [],
 												"typeProperties": {
+													"dataflow": {
+														"referenceName": "flw_m_party_bancoMaestroAgencia_full",
+														"type": "DataFlowReference"
+													},
 													"compute": {
 														"coreCount": 8,
 														"computeType": "General"
