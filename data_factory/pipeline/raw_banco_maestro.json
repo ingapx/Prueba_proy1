@@ -15,7 +15,7 @@
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "Switch1_copy1",
+							"name": "Switch_Maestro",
 							"type": "Switch",
 							"dependsOn": [],
 							"userProperties": [],

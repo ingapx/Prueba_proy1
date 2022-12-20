@@ -22,11 +22,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "sinkMasterParty",
-					"description": "Slowly Changing Dimension Type 2",
-					"rejectedDataLinkedService": {
-						"referenceName": "ADLS_LinkedService_Banco",
-						"type": "LinkedServiceReference"
-					}
+					"description": "Slowly Changing Dimension Type 2"
 				}
 			],
 			"transformations": [
