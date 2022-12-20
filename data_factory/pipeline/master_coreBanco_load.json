@@ -44,8 +44,14 @@
 					},
 					"waitOnCompletion": true,
 					"parameters": {
-						"year_date": "@pipeline().parameters.year_date",
-						"month_date": "@pipeline().parameters.month_date"
+						"year_date": {
+							"value": "@pipeline().parameters.year_date",
+							"type": "Expression"
+						},
+						"month_date": {
+							"value": "@pipeline().parameters.month_date",
+							"type": "Expression"
+						}
 					}
 				}
 			}
