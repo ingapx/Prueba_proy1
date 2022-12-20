@@ -124,7 +124,10 @@
 														},
 														"datasetParameters": {
 															"sourceBancoMaestroAgencia": {
-																"application": "banco",
+																"application": {
+																	"value": "@variables('applicationInput')",
+																	"type": "Expression"
+																},
 																"filename": "maestro/agencias"
 															}
 														}
@@ -156,7 +159,34 @@
 												"typeProperties": {
 													"dataflow": {
 														"referenceName": "flw_m_party_bancoMaestroFlujoVenta_full",
-														"type": "DataFlowReference"
+														"type": "DataFlowReference",
+														"parameters": {
+															"load_date": {
+																"value": "'@{utcNow()}'",
+																"type": "Expression"
+															},
+															"record_source": {
+																"value": "'@{string('banco')}'",
+																"type": "Expression"
+															},
+															"creation_user": {
+																"value": "'@{string('grupo2')}'",
+																"type": "Expression"
+															},
+															"process_date": {
+																"value": "'@{variables('process_date')}'",
+																"type": "Expression"
+															}
+														},
+														"datasetParameters": {
+															"sourceBancoMaestroFlujoVenta": {
+																"application": {
+																	"value": "@variables('applicationInput')",
+																	"type": "Expression"
+																},
+																"filename": "maestro/flujoVenta"
+															}
+														}
 													},
 													"compute": {
 														"coreCount": 8,
@@ -185,7 +215,31 @@
 												"typeProperties": {
 													"dataflow": {
 														"referenceName": "flw_m_party_bancoMaestroPerfil_full",
-														"type": "DataFlowReference"
+														"type": "DataFlowReference",
+														"parameters": {
+															"load_date": {
+																"value": "'@{utcNow()}'",
+																"type": "Expression"
+															},
+															"record_source": {
+																"value": "'@{string('banco')}'",
+																"type": "Expression"
+															},
+															"creation_user": {
+																"value": "'@{string('grupo2')}'",
+																"type": "Expression"
+															},
+															"process_date": {
+																"value": "'@{variables('process_date')}'",
+																"type": "Expression"
+															}
+														},
+														"datasetParameters": {
+															"sourceBancoMaestroPerfil": {
+																"application": "@variables('applicationInput')",
+																"filename": "maestro/perfil"
+															}
+														}
 													},
 													"compute": {
 														"coreCount": 8,
@@ -214,7 +268,31 @@
 												"typeProperties": {
 													"dataflow": {
 														"referenceName": "flw_m_party_bancoMaestroProductos_full",
-														"type": "DataFlowReference"
+														"type": "DataFlowReference",
+														"parameters": {
+															"load_date": {
+																"value": "'@{utcNow()}'",
+																"type": "Expression"
+															},
+															"record_source": {
+																"value": "'@{string('banco')}'",
+																"type": "Expression"
+															},
+															"creation_user": {
+																"value": "'@{string('grupo2')}'",
+																"type": "Expression"
+															},
+															"process_date": {
+																"value": "'@{variables('process_date')}'",
+																"type": "Expression"
+															}
+														},
+														"datasetParameters": {
+															"sourceBancoMaestroProductos": {
+																"application": "@variables('applicationInput')",
+																"filename": "maestro/productos"
+															}
+														}
 													},
 													"compute": {
 														"coreCount": 8,
@@ -243,7 +321,31 @@
 												"typeProperties": {
 													"dataflow": {
 														"referenceName": "flw_m_party_bancoMaestroRangoIngreso_full",
-														"type": "DataFlowReference"
+														"type": "DataFlowReference",
+														"parameters": {
+															"load_date": {
+																"value": "'@{utcNow()}'",
+																"type": "Expression"
+															},
+															"record_source": {
+																"value": "'@{string('banco')}'",
+																"type": "Expression"
+															},
+															"creation_user": {
+																"value": "'@{string('grupo2')}'",
+																"type": "Expression"
+															},
+															"process_date": {
+																"value": "'@{variables('process_date')}'",
+																"type": "Expression"
+															}
+														},
+														"datasetParameters": {
+															"sourceBancoMaestroRangoIngreso": {
+																"application": "@variables('applicationInput')",
+																"filename": "maestro/rangoIngreso"
+															}
+														}
 													},
 													"compute": {
 														"coreCount": 8,
