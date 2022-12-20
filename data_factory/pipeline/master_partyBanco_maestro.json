@@ -286,6 +286,10 @@
 					"Productos",
 					"RangoIngreso"
 				]
+			},
+			"applicationInput": {
+				"type": "String",
+				"defaultValue": "banco"
 			}
 		},
 		"folder": {
