@@ -1,0 +1,20 @@
+{
+	"name": "ddl_business_create_agencia",
+	"properties": {
+		"folder": {
+			"name": "business_main"
+		},
+		"content": {
+			"query": "-----------------------------------------------\n--Paso 00: Usar la BD Creada\n-----------------------------------------------\nUSE updatalakehousebanco;\nGO\n\n-----------------------------------------------\n--Paso 01: Creacion de tabla de dimension Data\n-----------------------------------------------\nSELECT * \nFrom OPENROWSET (BULK '/master/lakehouse/m_party_agencia/*.parquet',\nDATA_SOURCE= 'ExternalUPDataSource',\nFORMAT ='PARQUET')  AS [file]\nGO;\n\nCREATE EXTERNAL TABLE master_party.m_party_agencia \nWITH \n(\n    LOCATION = '/master/lakehouse/m_party_agencia/',\n    DATA_SOURCE = ExternalUPDataSource,  \n    FILE_FORMAT = UPParquetFileFormat\n) AS (\nSELECT * \nFrom OPENROWSET (BULK '/master/lakehouse/m_party_agencia/*.parquet',\nDATA_SOURCE= 'ExternalUPDataSource',\nFORMAT ='PARQUET')  AS [file]\n)\n\n-----------------------------------------------\n--Paso 01.1: Prueba de Creacion\n-----------------------------------------------\nSELECT * from business_knowa.bi_agencia_dim\n\n-----------------------------------------------\n--Paso 02: Creacion de vista de tabla\n-----------------------------------------------\nCREATE VIEW business_knowa.v_agencia_dim AS\nSELECT \nID_AGENCIA,AGENCIA,DEPARTAMENTO,PROVINCIA,DISTRITO,fechaCarga,is_active,hash_unique\nFROM OPENROWSET (\n BULK '/business/business_knowa/bi_agencia_dim/*.parquet',\n DATA_SOURCE= 'ExternalUPDataSource',\n FORMAT ='PARQUET'\n) as [r];\n\n-----------------------------------------------\n--Paso 03: Validar creación de vista\n-----------------------------------------------\nSELECT * FROM business_knowa.v_agencia_dim",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "updatalakehousebanco",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

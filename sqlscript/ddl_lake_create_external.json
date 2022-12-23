@@ -10,7 +10,7 @@
 				"language": "sql"
 			},
 			"currentConnection": {
-				"databaseName": "updatalakehouse",
+				"databaseName": "updatalakehousebanco",
 				"poolName": "Built-in"
 			},
 			"resultLimit": 5000
