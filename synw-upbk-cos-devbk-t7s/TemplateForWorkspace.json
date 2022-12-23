@@ -1,0 +1,327 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"workspaceName": {
+			"type": "string",
+			"metadata": "Workspace name",
+			"defaultValue": "synw-upbk-cos-devbk-t7s"
+		},
+		"synw-upbk-cos-devbk-t7s-WorkspaceDefaultSqlServer_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'synw-upbk-cos-devbk-t7s-WorkspaceDefaultSqlServer'",
+			"defaultValue": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=tcp:synw-upbk-cos-devbk-t7s.sql.azuresynapse.net,1433;Initial Catalog=@{linkedService().DBName}"
+		},
+		"synw-upbk-cos-devbk-t7s-WorkspaceDefaultStorage_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://dlsupbkcosdevbkk6k.dfs.core.windows.net"
+		}
+	},
+	"variables": {
+		"workspaceId": "[concat('Microsoft.Synapse/workspaces/', parameters('workspaceName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('workspaceName'), '/synw-upbk-cos-devbk-t7s-WorkspaceDefaultSqlServer')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"parameters": {
+					"DBName": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlDW",
+				"typeProperties": {
+					"connectionString": "[parameters('synw-upbk-cos-devbk-t7s-WorkspaceDefaultSqlServer_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/synw-upbk-cos-devbk-t7s-WorkspaceDefaultStorage')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('synw-upbk-cos-devbk-t7s-WorkspaceDefaultStorage_properties_typeProperties_url')]"
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/AutoResolveIntegrationRuntime')]",
+			"type": "Microsoft.Synapse/workspaces/integrationRuntimes",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"type": "Managed",
+				"typeProperties": {
+					"computeProperties": {
+						"location": "AutoResolve",
+						"dataFlowProperties": {
+							"computeType": "General",
+							"coreCount": 8,
+							"timeToLive": 0
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ddl_business_create_data')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "business_main"
+				},
+				"content": {
+					"query": "-----------------------------------------------\n--Paso 00: Usar la BD Creada\n-----------------------------------------------\nUSE updatalakehousebanco;\nGO\n\n-----------------------------------------------\n--Paso 01: Creacion de tabla de dimension Data\n-----------------------------------------------\nSELECT * \nFrom OPENROWSET (BULK '/master/lakehouse/m_party_data/*.parquet',\nDATA_SOURCE= 'ExternalUPDataSource',\nFORMAT ='PARQUET')  AS [file]\nGO;\n\nCREATE EXTERNAL TABLE business_knowa.bi_data_dim \nWITH (\n    LOCATION = '/business/business_knowa/bi_data_dim/',\n    DATA_SOURCE = ExternalUPDataSource,  \n    FILE_FORMAT = UPParquetFileFormat\n) AS (\n    SELECT * \nFrom OPENROWSET (BULK '/master/lakehouse/m_party_data/*.parquet',\nDATA_SOURCE= 'ExternalUPDataSource',\nFORMAT ='PARQUET')  AS [file]\n)\n\n-----------------------------------------------\n--Paso 01.1: Prueba de Creacion\n-----------------------------------------------\nSELECT * from business_knowa.bi_data_dim\n\n-----------------------------------------------\n--Paso 02: Creacion de vista de tabla\n-----------------------------------------------\nCREATE VIEW business_knowa.v_data_dim AS\nSELECT \ncodbin,fecha_desembolso,fecha_activacion,NumMesesAct,fecha_cancelacion,NumMesesCanc,linea_credito,flg_excepcion_consolidado,PD,id_agencia,TasaPOS,IdFlujoVenta,IdCanalVenta,idPerfilTC,IdRangoIngreso,edad,is_active,process_date,hash_unique\nFROM OPENROWSET (\n BULK '/business/business_knowa/bi_data_dim/*.parquet',\n DATA_SOURCE= 'ExternalUPDataSource',\n FORMAT ='PARQUET'\n) as [r];\n\n-----------------------------------------------\n--Paso 03: Validar creación de vista\n-----------------------------------------------\nSELECT * FROM business_knowa.v_data_dim",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "updatalakehousebanco",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ddl_lake_create_external')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "master_main"
+				},
+				"content": {
+					"query": "-----------------------------------------------\n--Paso 00: Usar la BD Creada\n-----------------------------------------------\nUSE updatalakehousebanco;\nGO\n\n-----------------------------------------------\n--Paso 01: Creacion table\n-----------------------------------------------\nSELECT * \nFrom OPENROWSET (BULK '/master/lakehouse/m_party/*.parquet',\nDATA_SOURCE= 'ExternalUPDataSource',\nFORMAT ='PARQUET')  AS [file]\nGO;\n\n-----------------------------------------------\n--Paso 02: Creacion table\n-----------------------------------------------\nUSE updatalakehouse;\nGO\n\nCREATE EXTERNAL TABLE master_party.m_party(\n    party_id nvarchar(50),\n    hash_unique BIGINT,\n    process_date nvarchar(10),\n    email nvarchar(50),    \n    creation_date nvarchar(40),\n    reputation_count nvarchar(20),\n    upvotes_count nvarchar(20),\n    downvotes_count nvarchar(20),\n    views_count nvarchar(20),\n    record_source nvarchar(20),\n    flag_active int,\n    load_date nvarchar(30),\n    creation_user nvarchar(20)\n)\n WITH (\n     LOCATION = '/master/lakehouse/m_party/',\n     DATA_SOURCE = ExternalUPDataSource,  \n     FILE_FORMAT = UPParquetFileFormat\n )\nGO\n\n---------------------------------------------------------\n--Paso 03: Validación de tipo de dato y tamaño de string\n---------------------------------------------------------\nSELECT party_id,hash_unique,process_date, email,creation_date,\nreputation_count, upvotes_count, downvotes_count, views_count, record_source, \nflag_active,load_date,creation_user\nFROM master_party.m_party\n\n\n-----------------------------------------------\n--Paso 04: Consulta de archivos\n-----------------------------------------------\nSELECT TOP(100) * \nFrom OPENROWSET (BULK '/master/lakehouse/master_transaction/year=*/month=*/*.parquet',\nDATA_SOURCE= 'ExternalUPDataSource',\nFORMAT ='PARQUET')  AS [file]\nWHERE request_type = 'vote'\nGO;\n\n-----------------------------------------------\n--Paso 05: Creacion tabla externa m_trasaction\n-----------------------------------------------\nCREATE EXTERNAL TABLE master_transaction.t_interaction(\n    interaction_id nvarchar(40),\n    party_id nvarchar(50),\n    reference_id nvarchar(40),\n    creation_date nvarchar(40),\n    deadline_date nvarchar(40),\n    answer_count nvarchar(10),\n    comment_count nvarchar(10),\n    favorite_count nvarchar(10),\n    view_count nvarchar(10),\n    score_value nvarchar(10),    \n    request_type nvarchar(10),\n    flag_active int,\n    load_date nvarchar(30),\n    record_source nvarchar(20),\n    creation_user nvarchar(20),\n    process_date nvarchar(10)\n) WITH (\n     LOCATION = '/master/lakehouse/master_transaction/year=*/month=*/*.parquet',\n     DATA_SOURCE = ExternalUPDataSource,  \n     FILE_FORMAT = UPParquetFileFormat\n )\nGO;\n\n-----------------------------------------------\n--Paso 06: Creacion tabla externa\n-----------------------------------------------\nSELECT TOP(100) interaction_id, party_id, reference_id, creation_date, request_type, flag_active, \n    load_date, record_source, creation_user, process_date\nFROM master_transaction.t_interaction\nGO;",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "updatalakehousebanco",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ddl_master_create_agencia')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "master_main"
+				},
+				"content": {
+					"query": "-----------------------------------------------\n--Paso 00: Usar la BD Creada\n-----------------------------------------------\nUSE updatalakehousebanco;\nGO\n\n-----------------------------------------------\n--Paso 01: Creacion de tabla de dimension Data\n-----------------------------------------------\nSELECT * \nFrom OPENROWSET (BULK '/master/lakehouse/m_party_agencia/*.parquet',\nDATA_SOURCE= 'ExternalUPDataSource',\nFORMAT ='PARQUET')  AS [file]\nGO;\n\n-----------------------------------------------\n--Paso 02: Creacion table\n-----------------------------------------------\n\nCREATE EXTERNAL TABLE master_party.m_party_agencia\n WITH (\n     LOCATION = '/master/lakehouse/table_agencia/',\n     DATA_SOURCE = ExternalUPDataSource,  \n     FILE_FORMAT = UPParquetFileFormat\n ) AS(\n    SELECT * \nFrom OPENROWSET (BULK '/master/lakehouse/m_party_agencia/*.parquet',\nDATA_SOURCE= 'ExternalUPDataSource',\nFORMAT ='PARQUET')  AS [file]\n)\nGO\n\n-----------------------------------------------\n--Paso 01.1: Prueba de Creacion\n-----------------------------------------------\nSELECT * from master_party.m_party_agencia\n\n-----------------------------------------------\n--Paso 02: Creacion de vista de tabla\n-----------------------------------------------\nCREATE VIEW master_party.v_agencia AS\nSELECT \nID_AGENCIA,AGENCIA,DEPARTAMENTO,PROVINCIA,DISTRITO,fechaCarga,is_active,hash_unique\nFROM OPENROWSET (\n BULK '/master/lakehouse/table_agencia/*.parquet',\n DATA_SOURCE= 'ExternalUPDataSource',\n FORMAT ='PARQUET'\n) as [r];\n\n-----------------------------------------------\n--Paso 03: Validar creación de vista\n-----------------------------------------------\nSELECT * FROM master_party.v_agencia\n\nDROP EXTERNAL TABLE master_party.m_party_agencia",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "updatalakehousebanco",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ddl_master_create_flujoVenta')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "master_main"
+				},
+				"content": {
+					"query": "-----------------------------------------------\n--Paso 00: Usar la BD Creada\n-----------------------------------------------\nUSE updatalakehousebanco;\nGO\n\n-----------------------------------------------\n--Paso 01: Creacion de tabla de dimension Data\n-----------------------------------------------\nSELECT * \nFrom OPENROWSET (BULK '/master/lakehouse/m_party_flujoVenta/*.parquet',\nDATA_SOURCE= 'ExternalUPDataSource',\nFORMAT ='PARQUET')  AS [file]\nGO;\n\n-----------------------------------------------\n--Paso 02: Creacion table\n-----------------------------------------------\n\nCREATE EXTERNAL TABLE master_party.m_party_flujoVenta\n WITH (\n     LOCATION = '/master/lakehouse/table_flujoVenta/',\n     DATA_SOURCE = ExternalUPDataSource,  \n     FILE_FORMAT = UPParquetFileFormat\n ) AS(\n    SELECT * \nFrom OPENROWSET (BULK '/master/lakehouse/m_party_flujoVenta/*.parquet',\nDATA_SOURCE= 'ExternalUPDataSource',\nFORMAT ='PARQUET')  AS [file]\n)\nGO\n\n-----------------------------------------------\n--Paso 01.1: Prueba de Creacion\n-----------------------------------------------\nSELECT * from master_party.m_party_flujoVenta\n\n-----------------------------------------------\n--Paso 02: Creacion de vista de tabla\n-----------------------------------------------\nCREATE VIEW master_party.v_flujoVenta AS\nSELECT \nidFlujoVenta,FlujoVenta,FlujoVentaDetalle,fechaCarga,is_active,hash_unique\nFROM OPENROWSET (\n BULK '/master/lakehouse/table_flujoVenta/*.parquet',\n DATA_SOURCE= 'ExternalUPDataSource',\n FORMAT ='PARQUET'\n) as [r];\n\n-----------------------------------------------\n--Paso 03: Validar creación de vista\n-----------------------------------------------\nSELECT * FROM master_party.v_flujoVenta\n\ndrop EXTERNAL TABLE master_party.m_party go",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "updatalakehousebanco",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ddl_master_create_perfil')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "master_main"
+				},
+				"content": {
+					"query": "-----------------------------------------------\n--Paso 00: Usar la BD Creada\n-----------------------------------------------\nUSE updatalakehousebanco;\nGO\n\n-----------------------------------------------\n--Paso 01: Creacion de tabla de dimension Data\n-----------------------------------------------\nSELECT * \nFrom OPENROWSET (BULK '/master/lakehouse/m_party_perfil/*.parquet',\nDATA_SOURCE= 'ExternalUPDataSource',\nFORMAT ='PARQUET')  AS [file]\nGO;\n\n-----------------------------------------------\n--Paso 02: Creacion table\n-----------------------------------------------\n\nCREATE EXTERNAL TABLE master_party.m_party_perfil\n WITH (\n     LOCATION = '/master/lakehouse/table_perfil/',\n     DATA_SOURCE = ExternalUPDataSource,  \n     FILE_FORMAT = UPParquetFileFormat\n ) AS(\n    SELECT * \nFrom OPENROWSET (BULK '/master/lakehouse/m_party_perfil/*.parquet',\nDATA_SOURCE= 'ExternalUPDataSource',\nFORMAT ='PARQUET')  AS [file]\n)\nGO\n\n-----------------------------------------------\n--Paso 01.1: Prueba de Creacion\n-----------------------------------------------\nSELECT * from master_party.m_party_perfil\n\n-----------------------------------------------\n--Paso 02: Creacion de vista de tabla\n-----------------------------------------------\nCREATE VIEW master_party.v_perfil AS\nSELECT \nidPerfilTC,PerfilTC,fechaCarga,is_active,hash_unique\nFROM OPENROWSET (\n BULK '/master/lakehouse/table_perfil/*.parquet',\n DATA_SOURCE= 'ExternalUPDataSource',\n FORMAT ='PARQUET'\n) as [r];\n\n-----------------------------------------------\n--Paso 03: Validar creación de vista\n-----------------------------------------------\nSELECT * FROM master_party.v_perfil\n\ndrop EXTERNAL TABLE master_party.m_party_perfil go",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "updatalakehousebanco",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ddl_master_create_producto')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "master_main"
+				},
+				"content": {
+					"query": "-----------------------------------------------\n--Paso 00: Usar la BD Creada\n-----------------------------------------------\nUSE updatalakehousebanco;\nGO\n\n-----------------------------------------------\n--Paso 01: Creacion de tabla de dimension Data\n-----------------------------------------------\nSELECT * \nFrom OPENROWSET (BULK '/master/lakehouse/m_party_productos/*.parquet',\nDATA_SOURCE= 'ExternalUPDataSource',\nFORMAT ='PARQUET')  AS [file]\nGO;\n\n-----------------------------------------------\n--Paso 02: Creacion table\n-----------------------------------------------\n\nCREATE EXTERNAL TABLE master_party.m_party_productos\n WITH (\n     LOCATION = '/master/lakehouse/table_productos/',\n     DATA_SOURCE = ExternalUPDataSource,  \n     FILE_FORMAT = UPParquetFileFormat\n ) AS(\n    SELECT * \nFrom OPENROWSET (BULK '/master/lakehouse/m_party_productos/*.parquet',\nDATA_SOURCE= 'ExternalUPDataSource',\nFORMAT ='PARQUET')  AS [file]\n)\nGO\n\n-----------------------------------------------\n--Paso 01.1: Prueba de Creacion\n-----------------------------------------------\nSELECT * from master_party.m_party_productos\n\n-----------------------------------------------\n--Paso 02: Creacion de vista de tabla\n-----------------------------------------------\nCREATE VIEW master_party.v_productos AS\nSELECT \ncodbin,BIN,orden,fechaCarga,is_active,hash_unique\nFROM OPENROWSET (\n BULK '/master/lakehouse/table_productos/*.parquet',\n DATA_SOURCE= 'ExternalUPDataSource',\n FORMAT ='PARQUET'\n) as [r];\n\n-----------------------------------------------\n--Paso 03: Validar creación de vista\n-----------------------------------------------\nSELECT * FROM master_party.v_productos\n\ndrop EXTERNAL TABLE master_party.m_party_productos go",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "updatalakehousebanco",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ddl_master_create_rangoIngreso')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "master_main"
+				},
+				"content": {
+					"query": "-----------------------------------------------\n--Paso 00: Usar la BD Creada\n-----------------------------------------------\nUSE updatalakehousebanco;\nGO\n\n-----------------------------------------------\n--Paso 01: Creacion de tabla de dimension Data\n-----------------------------------------------\nSELECT * \nFrom OPENROWSET (BULK '/master/lakehouse/m_party_rangoIngreso/*.parquet',\nDATA_SOURCE= 'ExternalUPDataSource',\nFORMAT ='PARQUET')  AS [file]\nGO;\n\n-----------------------------------------------\n--Paso 02: Creacion table\n-----------------------------------------------\n\nCREATE EXTERNAL TABLE master_party.m_party_rangoIngreso\n WITH (\n     LOCATION = '/master/lakehouse/table_rangoIngreso/',\n     DATA_SOURCE = ExternalUPDataSource,  \n     FILE_FORMAT = UPParquetFileFormat\n ) AS(\n    SELECT * \nFrom OPENROWSET (BULK '/master/lakehouse/m_party_rangoIngreso/*.parquet',\nDATA_SOURCE= 'ExternalUPDataSource',\nFORMAT ='PARQUET')  AS [file]\n)\nGO\n\n-----------------------------------------------\n--Paso 01.1: Prueba de Creacion\n-----------------------------------------------\nSELECT * from master_party.m_party_rangoIngreso\n\n-----------------------------------------------\n--Paso 02: Creacion de vista de tabla\n-----------------------------------------------\nCREATE VIEW master_party.v_rangoIngreso AS\nSELECT \nidRangoIngreso,Rango,is_active,hash_unique\nFROM OPENROWSET (\n BULK '/master/lakehouse/table_rangoIngreso/*.parquet',\n DATA_SOURCE= 'ExternalUPDataSource',\n FORMAT ='PARQUET'\n) as [r];\n\n-----------------------------------------------\n--Paso 03: Validar creación de vista\n-----------------------------------------------\nSELECT * FROM master_party.v_rangoIngreso\n\ndrop EXTERNAL TABLE master_party.m_party_rangoIngreso go",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "updatalakehousebanco",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/initial_config')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "/*---------------------------------------------\nScript Inicial de UP LakehouseBanco\n-----------------------------------------------\nAutor: Mauro A. León Payano\nImplementación: Grupo 2\nFecha: 22/12/2022*/\n-----------------------------------------------\n--Paso 1: Creacion de repositorio de datos\n-----------------------------------------------\nCREATE DATABASE updatalakehousebanco;\nGO\n\nUSE updatalakehousebanco;\nGO\n\n-----------------------------------------------\n--Paso 2: Creacion de dataset por zona de datos\n-----------------------------------------------\nCREATE SCHEMA master_transaction AUTHORIZATION dbo;\nGO\n\nCREATE SCHEMA master_channel AUTHORIZATION dbo;\nGO\n\nCREATE SCHEMA master_party AUTHORIZATION dbo;\nGO\n\nCREATE SCHEMA business_knowa AUTHORIZATION dbo;\nGO\n\n-------------------------------------------------------------------------\n--Paso 3: Asignación de clave de encriptación y formato de tablas externas\n-------------------------------------------------------------------------\nCREATE MASTER KEY ENCRYPTION BY PASSWORD = 'SQLbanco$$grupo2UP%%'\nGO\n\nCREATE DATABASE SCOPED CREDENTIAL UPUserIdentity WITH IDENTITY = 'SHARED ACCESS SIGNATURE',\nSECRET = '?sv=2021-06-08&ss=bfqt&srt=sco&sp=rwdlacupyx&se=2023-01-31T10:40:25Z&st=2022-12-23T02:40:25Z&spr=https&sig=emxGoO1%2BZFF4acFzcAuuyLB9QSFnxSrtMRtsCx0LFR4%3D'\nGO\n\nCREATE EXTERNAL DATA SOURCE ExternalUPDataSource\nWITH (\n    LOCATION = 'https://dlsupbkcosdevbkk6k.dfs.core.windows.net/',\n    CREDENTIAL = UPUserIdentity\n);\nGO\n\nCREATE EXTERNAL FILE FORMAT UPParquetFileFormat \nWITH (\n    FORMAT_TYPE = PARQUET,\n    DATA_COMPRESSION = 'org.apache.hadoop.io.compress.SnappyCodec'\n);\nGO\n\nCREATE EXTERNAL FILE FORMAT UPDeltaFileFormat\nWITH (\n    FORMAT_TYPE = DELTA\n);\nGO\n\n\n\n",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "updatalakehousebanco",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/sp_business_lake_process')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "master_main"
+				},
+				"content": {
+					"query": "\n-----------------------------------------------\n--Paso 01: Procedimiento almacenado - Template\n-----------------------------------------------\nCREATE PROCEDURE load_business_report_if_noload\n    @table_name NVARCHAR(40),\n    @year NVARCHAR(4),\n    @month NVARCHAR(2),\n    @result NVARCHAR(MAX) OUTPUT\nAS BEGIN\n    BEGIN TRY \n        IF NULLIF(@year, '') IS NULL\n        BEGIN\n        -- Generate divide-by-zero error.  \n            ;THROW 51007, 'Parameter not defined.', 1\n        END\n        SET @result = 'Not Problem'\n    END TRY  \n    BEGIN CATCH  \n        -- Execute error retrieval routine.  \n        SET @result = (SELECT  ERROR_MESSAGE() AS ErrorMessage)\n    END CATCH;\n    SELECT @result AS resultado\nEND\nGO\n\n-----------------------------------------------\n--Paso 02: Prueba de procedimiento almacenado\n-----------------------------------------------\nDECLARE @OutputParameter  NVARCHAR(MAX)\n       ,@ReturnValue      INT\n\nEXEC @ReturnValue=load_business_report_if_noload 1,null, null, @OutputParameter OUTPUT\nPRINT @OutputParameter\n\n-----------------------------------------------\n--Paso 03: Transformación de datos\n-----------------------------------------------\n\nCREATE EXTERNAL TABLE business.DimProduct\n WITH (\n     LOCATION = '/business/lakehouse/dimproduct/Year=2022/Month=04/',\n     DATA_SOURCE = ExternalUPDataSource,  \n     FILE_FORMAT = UPParquetFileFormat\n )  \n AS\nSELECT p.ProductID AS ProductID, \np.Name AS ProductName, \np.ProductNumber AS ProductAlternativeKey, \np.FinishedGoodsFlag AS FinishedGoodsFlag, \np.Color AS Color,\np.SafetyStockLevel AS SafetyStockLevel,\np.ReorderPoint AS ReorderPoint,\np.StandardCost AS StandardCost,\np.ListPrice AS ListPrice,\np.Size AS Size,\np.ProductLine AS ProductLine,\np.Class AS Class,\np.Style AS Style,\np.SellStartDate AS SellStartDate,\np.SellEndDate AS SellEndDate,\np.DiscontinuedDate AS DiscontinuedDate,\npc.ProductCategoryName AS ProductCategoryName,\npsc.Name AS ProductSubCategoryName\nFROM stagingDim.Product p  \nINNER JOIN stagingDim.ProductSubcategory psc\nON p.ProductSubCategoryID = psc.ProductSubCategoryID\nINNER JOIN stagingDim.ProductCategory pc\nON pc.ProductCategoryID = psc.ProductCategoryID\nGO\n\n\n\n\n\n",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "updatalakehouse",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/02_CREATE_TABLE_EXTERNAL')]",
+			"type": "Microsoft.Synapse/workspaces/sparkConfigurations",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"configs": {
+					"\"name\":": "\"02_CREATE_TABLE_EXTERNAL\",",
+					"\"properties\":": "{",
+					"\"content\":": "{",
+					"\"query\":": "\"USE datascience2022;\\nGO\\n\\nCREATE EXTERNAL TABLE business.DimPerson\\n WITH (\\n     LOCATION = '/business/lakehouse/dimperson/Year=2022/Month=04/',\\n     DATA_SOURCE = ExternalUPDataSource,  \\n     FILE_FORMAT = UPParquetFileFormat\\n )  \\n AS\\nWITH CustomerIDNotNull (CustomerID, PersonID, CustomerAlternativeKey)  \\nAS  \\n(  \\n    SELECT c.CustomerID, c.PersonID, c.AccountNumber\\n    FROM stagingDim.Customer c \\n    WHERE c.PersonID IS NOT NULL \\n) \\nSELECT c.CustomerID AS CustomerKey, \\nc.CustomerAlternativeKey AS CustomerAlternativeKey, \\np.Title AS Title, p.FirstName AS FirstName, \\np.MiddleName AS MiddleName, p.LastName AS LastName,\\np.Suffix AS Suffix  \\nFROM stagingDim.Person p  \\nINNER JOIN CustomerIDNotNull c\\nON c.PersonID = p.BusinessEntityID\\nINNER JOIN stagingDim.PersonPhone ph\\nON c.PersonID = ph.BusinessEntityID\\nINNER JOIN stagingDim.EmailAddress em\\nON c.PersonID = em.BusinessEntityID\\nGO\\n\\nCREATE EXTERNAL TABLE business.DimProduct\\n WITH (\\n     LOCATION = '/business/lakehouse/dimproduct/Year=2022/Month=04/',\\n     DATA_SOURCE = ExternalUPDataSource,  \\n     FILE_FORMAT = UPParquetFileFormat\\n )  \\n AS\\nSELECT p.ProductID AS ProductID, \\np.Name AS ProductName, \\np.ProductNumber AS ProductAlternativeKey, \\np.FinishedGoodsFlag AS FinishedGoodsFlag, \\np.Color AS Color,\\np.SafetyStockLevel AS SafetyStockLevel,\\np.ReorderPoint AS ReorderPoint,\\np.StandardCost AS StandardCost,\\np.ListPrice AS ListPrice,\\np.Size AS Size,\\np.ProductLine AS ProductLine,\\np.Class AS Class,\\np.Style AS Style,\\np.SellStartDate AS SellStartDate,\\np.SellEndDate AS SellEndDate,\\np.DiscontinuedDate AS DiscontinuedDate,\\npc.ProductCategoryName AS ProductCategoryName,\\npsc.Name AS ProductSubCategoryName\\nFROM stagingDim.Product p  \\nINNER JOIN stagingDim.ProductSubcategory psc\\nON p.ProductSubCategoryID = psc.ProductSubCategoryID\\nINNER JOIN stagingDim.ProductCategory pc\\nON pc.ProductCategoryID = psc.ProductCategoryID\\nGO\\n\\nCREATE EXTERNAL TABLE business.FactInternetSales\\nWITH (\\n     LOCATION = '/business/lakehouse/factinternetsales/Year=2022/Month=04/',\\n     DATA_SOURCE = ExternalUPDataSource,  \\n     FILE_FORMAT = UPParquetFileFormat\\n)  \\nAS\\nSELECT\\nsod.ProductID AS ProductKey,\\nConvert(CHAR(8),soh.OrderDate,112) AS OrderDateKey,\\nConvert(CHAR(8),soh.DueDate,112) AS DueDateKey,\\nsoh.CustomerID AS CustomerKey,\\nsoh.SalesOrderNumber,\\nsod.SpecialOfferID AS SpecialOfferKey,\\nSUM(sod.UnitPrice*sod.OrderQty) AS TotalCost,\\nSUM(sod.OrderQty) AS TotalOrderQuantity,\\nSUM(sod.UnitPriceDiscount) AS TotalDiscount\\nFROM stagingDim.SalesOrderHeader soh \\nINNER JOIN stagingDim.SalesOrderDetail sod \\nON soh.SalesOrderID = sod.SalesOrderID\\nGROUP BY sod.ProductID,sod.SpecialOfferID,soh.OrderDate,soh.DueDate,CustomerID,soh.SalesOrderNumber\\nGO\\n\\n--Transacional con particion\\nCREATE EXTERNAL TABLE business.DimDate(\\n    DateKey INT,\\n    FullDateAlternateKey DATE\\n) WITH (\\n    LOCATION = '/business/lakehouse/dimdate/DimDate.csv',\\n    DATA_SOURCE = ExternalUPDataSource,\\n    FILE_FORMAT = UPCSVWithHEADERFORMAT\\n);\\nGO\",",
+					"\"metadata\":": "{",
+					"\"language\":": "\"sql\"",
+					"\"currentConnection\":": "{",
+					"\"databaseName\":": "\"master\",",
+					"\"poolName\":": "\"Built-in\"",
+					"\"resultLimit\":": "5000",
+					"\"type\":": "\"SqlQuery\""
+				},
+				"created": "2022-12-11T21:22:48.5080000-05:00",
+				"createdBy": "MA.LeonP@up.edu.pe",
+				"configMergeRule": {
+					"artifact.currentOperation.\"name\":": "replace",
+					"artifact.currentOperation.\"properties\":": "replace",
+					"artifact.currentOperation.\"content\":": "replace",
+					"artifact.currentOperation.\"query\":": "replace",
+					"artifact.currentOperation.\"metadata\":": "replace",
+					"artifact.currentOperation.\"language\":": "replace",
+					"artifact.currentOperation.\"currentConnection\":": "replace",
+					"artifact.currentOperation.\"databaseName\":": "replace",
+					"artifact.currentOperation.\"poolName\":": "replace",
+					"artifact.currentOperation.\"resultLimit\":": "replace",
+					"artifact.currentOperation.\"type\":": "replace"
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}

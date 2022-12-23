@@ -1,0 +1,15 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"workspaceName": {
+			"value": "synw-upbk-cos-devbk-t7s"
+		},
+		"synw-upbk-cos-devbk-t7s-WorkspaceDefaultSqlServer_connectionString": {
+			"value": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=tcp:synw-upbk-cos-devbk-t7s.sql.azuresynapse.net,1433;Initial Catalog=@{linkedService().DBName}"
+		},
+		"synw-upbk-cos-devbk-t7s-WorkspaceDefaultStorage_properties_typeProperties_url": {
+			"value": "https://dlsupbkcosdevbkk6k.dfs.core.windows.net"
+		}
+	}
+}
