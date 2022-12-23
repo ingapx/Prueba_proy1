@@ -1,5 +1,5 @@
 {
-	"name": "ddl_business_create_agencia",
+	"name": "ddl_master_create_agencia",
 	"properties": {
 		"folder": {
 			"name": "business_main"
