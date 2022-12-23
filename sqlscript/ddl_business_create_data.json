@@ -1,0 +1,20 @@
+{
+	"name": "ddl_business_create_data",
+	"properties": {
+		"folder": {
+			"name": "business_main"
+		},
+		"content": {
+			"query": "-----------------------------------------------\n--Paso 00: Usar la BD Creada\n-----------------------------------------------\nUSE updatalakehousebanco;\nGO\n\n-----------------------------------------------\n--Paso 01: Creacion de tabla de dimension Data\n-----------------------------------------------\nSELECT * \nFrom OPENROWSET (BULK '/master/lakehouse/m_party_data/*.parquet',\nDATA_SOURCE= 'ExternalUPDataSource',\nFORMAT ='PARQUET')  AS [file]\nGO;\n\nCREATE EXTERNAL TABLE business_knowa.bi_data_dim \nWITH (\n    LOCATION = '/business/business_knowa/bi_data_dim/',\n    DATA_SOURCE = ExternalUPDataSource,  \n    FILE_FORMAT = UPParquetFileFormat\n) AS (\n    SELECT * \nFrom OPENROWSET (BULK '/master/lakehouse/m_party_data/*.parquet',\nDATA_SOURCE= 'ExternalUPDataSource',\nFORMAT ='PARQUET')  AS [file]\n)\n\n-----------------------------------------------\n--Paso 01.1: Prueba de Creacion\n-----------------------------------------------\nSELECT * from business_knowa.bi_data_dim\n\n-----------------------------------------------\n--Paso 02: Creacion de vista de tabla\n-----------------------------------------------\nCREATE VIEW business_knowa.v_data_dim AS\nSELECT \ncodbin,fecha_desembolso,fecha_activacion,NumMesesAct,fecha_cancelacion,NumMesesCanc,linea_credito,flg_excepcion_consolidado,PD,id_agencia,TasaPOS,IdFlujoVenta,IdCanalVenta,idPerfilTC,IdRangoIngreso,edad,is_active,process_date,hash_unique\nFROM OPENROWSET (\n BULK '/business/business_knowa/bi_data_dim/*.parquet',\n DATA_SOURCE= 'ExternalUPDataSource',\n FORMAT ='PARQUET'\n) as [r];\n\n-----------------------------------------------\n--Paso 03: Validar creación de vista\n-----------------------------------------------\nSELECT * FROM business_knowa.v_data_dim",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "updatalakehousebanco",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
