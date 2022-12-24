@@ -1,0 +1,20 @@
+{
+	"name": "ddl_master_create_agencia",
+	"properties": {
+		"folder": {
+			"name": "master_main"
+		},
+		"content": {
+			"query": "-----------------------------------------------\n--Paso 00: Usar la BD Creada\n-----------------------------------------------\nUSE updatalakehousebanco;\nGO\n\n-----------------------------------------------\n--Paso 01: Creacion de tabla de dimension Data\n-----------------------------------------------\nSELECT * \nFrom OPENROWSET (BULK '/master/lakehouse/m_party_agencia/*.parquet',\nDATA_SOURCE= 'ExternalUPDataSource',\nFORMAT ='PARQUET')  AS [file]\nGO;\n\n-----------------------------------------------\n--Paso 02: Creacion table\n-----------------------------------------------\n\nCREATE EXTERNAL TABLE master_party.m_party_agencia\n WITH (\n     LOCATION = '/master/lakehouse/table_agencia/',\n     DATA_SOURCE = ExternalUPDataSource,  \n     FILE_FORMAT = UPParquetFileFormat\n ) AS(\n    SELECT * \nFrom OPENROWSET (BULK '/master/lakehouse/m_party_agencia/*.parquet',\nDATA_SOURCE= 'ExternalUPDataSource',\nFORMAT ='PARQUET')  AS [file]\n)\nGO\n\n-----------------------------------------------\n--Paso 01.1: Prueba de Creacion\n-----------------------------------------------\nSELECT * from master_party.m_party_agencia\n\n-----------------------------------------------\n--Paso 02: Creacion de vista de tabla\n-----------------------------------------------\nCREATE VIEW master_party.v_agencia AS\nSELECT \nID_AGENCIA,AGENCIA,DEPARTAMENTO,PROVINCIA,DISTRITO,fechaCarga,is_active,hash_unique\nFROM OPENROWSET (\n BULK '/master/lakehouse/table_agencia/*.parquet',\n DATA_SOURCE= 'ExternalUPDataSource',\n FORMAT ='PARQUET'\n) as [r];\n\n-----------------------------------------------\n--Paso 03: Validar creación de vista\n-----------------------------------------------\nSELECT * FROM master_party.v_agencia\n\nDROP EXTERNAL TABLE master_party.m_party_agencia",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "updatalakehousebanco",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
